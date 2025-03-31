@@ -5,6 +5,7 @@
     <class>entidades.Comanda</class>
     <class>entidades.Producto</class>
     <class>entidades.DetalleComanda</class>
+    <class>entidades.IngredienteProducto</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/restaurante?serverTimezone=UTC"/>
       <property name="javax.persistence.jdbc.user" value="root"/>
