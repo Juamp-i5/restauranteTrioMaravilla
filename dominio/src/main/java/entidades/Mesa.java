@@ -16,7 +16,7 @@ public class Mesa implements Serializable {
 
     @Column(nullable = false)
     private Boolean disponible = true;
-
+    
     public Mesa() {
     }
 
@@ -44,4 +44,8 @@ public class Mesa implements Serializable {
         this.disponible = disponible;
     }
 
+    @Override
+    public String toString() {
+        return "Mesa{" + "id=" + id + ", nombre=" + nombre + ", disponible=" + disponible + '}';
+    }
 }

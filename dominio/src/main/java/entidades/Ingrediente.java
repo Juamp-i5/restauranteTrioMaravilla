@@ -91,7 +91,4 @@ public class Ingrediente implements Serializable {
     public String toString() {
         return "Ingrediente{" + "id=" + id + ", nombre=" + nombre + ", unidadMedida=" + unidadMedida + ", cantidadStock=" + cantidadStock + '}';
     }
-
-    
-    
 }

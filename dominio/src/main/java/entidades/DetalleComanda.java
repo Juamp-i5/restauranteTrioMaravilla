@@ -69,4 +69,8 @@ public class DetalleComanda implements Serializable {
         this.comanda = comanda;
     }
 
+    @Override
+    public String toString() {
+        return "DetalleComanda{" + "id=" + id + ", cantidad=" + cantidad + ", comentario=" + comentario + ", producto=" + producto + ", comanda=" + comanda + '}';
+    }
 }

@@ -31,6 +31,10 @@ public class Comanda implements Serializable {
 
     @OneToMany(mappedBy = "comanda")
     private List<DetalleComanda> detallesComanda;
+    
+    @ManyToOne
+    @JoinColumn(name = "ID_CLIENTE",nullable = false)
+    private Cliente cliente;
 
     public Comanda() {
     }
@@ -75,4 +79,8 @@ public class Comanda implements Serializable {
         this.detallesComanda = detallesComanda;
     }
 
+    @Override
+    public String toString() {
+        return "Comanda{" + "id=" + id + ", folio=" + folio + ", estado=" + estado + ", fechaHoraRegistro=" + fechaHoraRegistro + ", mesa=" + mesa + ", detallesComanda=" + detallesComanda + ", cliente=" + cliente + '}';
+    }
 }

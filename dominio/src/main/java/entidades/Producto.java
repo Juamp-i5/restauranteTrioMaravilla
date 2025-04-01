@@ -74,5 +74,4 @@ public class Producto implements Serializable {
     public String toString() {
         return "Producto{" + "id=" + id + ", nombre=" + nombre + ", precio=" + precio + ", tipo=" + tipo + ", ingredientesProducto=" + ingredientesProducto + '}';
     }
-
 }
