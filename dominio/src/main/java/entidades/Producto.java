@@ -24,7 +24,7 @@ public class Producto implements Serializable {
     @Enumerated(EnumType.STRING)
     private TipoProducto tipo;
 
-    @OneToMany(mappedBy = "producto")
+    @OneToMany(mappedBy = "producto", fetch = FetchType.LAZY)
     List<IngredienteProducto> ingredientesProducto;
 
     public Producto() {
@@ -68,6 +68,11 @@ public class Producto implements Serializable {
 
     public void setIngredientesProducto(List<IngredienteProducto> ingredientesProducto) {
         this.ingredientesProducto = ingredientesProducto;
+    }
+
+    @Override
+    public String toString() {
+        return "Producto{" + "id=" + id + ", nombre=" + nombre + ", precio=" + precio + ", tipo=" + tipo + ", ingredientesProducto=" + ingredientesProducto + '}';
     }
 
 }

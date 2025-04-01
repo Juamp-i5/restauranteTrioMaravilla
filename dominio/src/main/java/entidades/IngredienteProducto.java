@@ -15,11 +15,11 @@ public class IngredienteProducto implements Serializable {
     @Column(nullable = false)
     private Integer cantidad;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_PRODUCTO", nullable = false)
     private Producto producto;
     
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_INGREDIENTE", nullable = false)
     private Ingrediente ingrediente;
 
