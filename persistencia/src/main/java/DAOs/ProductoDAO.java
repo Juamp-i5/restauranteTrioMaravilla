@@ -11,6 +11,7 @@ import javax.persistence.Query;
 
 public class ProductoDAO implements IProductoDAO {
 
+    @Override
     public Producto obtenerProducto(Long idProducto) throws PersistenciaException {
         EntityManager em = Conexion.getEntityManager();
         try {
@@ -24,6 +25,7 @@ public class ProductoDAO implements IProductoDAO {
         }
     }
 
+    @Override
     public List<Producto> obtenerProductos() throws PersistenciaException {
         EntityManager em = Conexion.getEntityManager();
         try {
@@ -38,10 +40,11 @@ public class ProductoDAO implements IProductoDAO {
         }
     }
 
+    @Override
     public List<Producto> obtenerProductosDisponibles() throws PersistenciaException {
         EntityManager em = Conexion.getEntityManager();
         try {
-            Query query = em.createQuery("SELECT DISTINCT p FROM Producto p WHERE NOT EXISTS (SELECT i FROM p.ingredientesProducto i WHERE i.cantidad > i.ingrediente.cantidadStock)", Producto.class);
+            Query query = em.createQuery("SELECT DISTINCT p FROM Producto p WHERE p.estado = 'HABILITADO' AND NOT EXISTS (SELECT i FROM p.ingredientesProducto i WHERE i.cantidad > i.ingrediente.cantidadStock)", Producto.class);
             return query.getResultList();
         } catch (Exception e) {
             throw new PersistenciaException("Error al obtener lista de productos disponibles", e);
@@ -52,10 +55,11 @@ public class ProductoDAO implements IProductoDAO {
         }
     }
 
+    @Override
     public Boolean isProductoDisponible(Long idProducto) throws PersistenciaException {
         EntityManager em = Conexion.getEntityManager();
         try {
-            Query query = em.createQuery("SELECT COUNT(p) FROM Producto p WHERE p.id = :idProducto AND NOT EXISTS (SELECT i FROM p.ingredientesProducto i WHERE i.cantidad > i.ingrediente.cantidadStock)");;
+            Query query = em.createQuery("SELECT COUNT(p) FROM Producto p WHERE p.id = :idProducto AND p.estado = 'HABILITADO' AND NOT EXISTS (SELECT i FROM p.ingredientesProducto i WHERE i.cantidad > i.ingrediente.cantidadStock)");
             return (Long) query.getSingleResult() > 0;
         } catch (Exception e) {
             throw new PersistenciaException("Error al obtener lista de productos disponibles", e);
@@ -79,7 +83,7 @@ public class ProductoDAO implements IProductoDAO {
             if (em != null && em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
-            throw new PersistenciaException("Error al crear producto", e);
+            throw new PersistenciaException("Error al persistir producto", e);
         } finally {
             if (em != null && em.isOpen()) {
                 em.close();
@@ -87,9 +91,29 @@ public class ProductoDAO implements IProductoDAO {
         }
     }
 
+    @Override
     public void agregarIngredienteProducto(Producto producto, IngredienteProducto ingredienteProducto) throws PersistenciaException {
         EntityManager em = Conexion.getEntityManager();
         producto.getIngredientesProducto().add(ingredienteProducto);
+        try {
+            em.getTransaction().begin();
+            em.merge(producto);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            if (em != null && em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new PersistenciaException("Error al agregar IngredienteProducto a Producto", e);
+        } finally {
+            if (em != null && em.isOpen()) {
+                em.close();
+            }
+        }
+    }
+    
+    public void eliminarIngredienteProducto(Producto producto, IngredienteProducto ingredienteProducto) throws PersistenciaException {
+        EntityManager em = Conexion.getEntityManager();
+        producto.getIngredientesProducto().remove(ingredienteProducto);
         try {
             em.getTransaction().begin();
             em.merge(producto);

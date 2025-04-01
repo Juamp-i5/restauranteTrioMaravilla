@@ -1,5 +1,6 @@
 package entidades;
 
+import entidades.enums.EstadoProducto;
 import entidades.enums.TipoProducto;
 import java.io.Serializable;
 import java.util.List;
@@ -23,6 +24,10 @@ public class Producto implements Serializable {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private TipoProducto tipo;
+
+    @Column(nullable = false)
+    @Enumerated
+    private EstadoProducto estado = EstadoProducto.HABILITADO;
 
     @OneToMany(mappedBy = "producto", cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
     List<IngredienteProducto> ingredientesProducto;
@@ -70,8 +75,17 @@ public class Producto implements Serializable {
         this.ingredientesProducto = ingredientesProducto;
     }
 
+    public EstadoProducto getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadoProducto estado) {
+        this.estado = estado;
+    }
+
     @Override
     public String toString() {
-        return "Producto{" + "id=" + id + ", nombre=" + nombre + ", precio=" + precio + ", tipo=" + tipo + ", ingredientesProducto=" + ingredientesProducto + '}';
+        return "Producto{" + "id=" + id + ", nombre=" + nombre + ", precio=" + precio + ", tipo=" + tipo + ", estado=" + estado + ", ingredientesProducto=" + ingredientesProducto + '}';
     }
+
 }
