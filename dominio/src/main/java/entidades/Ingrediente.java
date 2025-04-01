@@ -24,18 +24,18 @@ import javax.persistence.Table;
 public class Ingrediente implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(length = 50, nullable = false)
     private String nombre;
-    
-    @Enumerated(EnumType.STRING) 
+
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UnidadMedida unidadMedida;
-    
+
     @Column(nullable = false)
     private Integer cantidadStock;
 
@@ -54,7 +54,7 @@ public class Ingrediente implements Serializable {
         this.unidadMedida = unidadMedida;
         this.cantidadStock = cantidadStock;
     }
-    
+
     public Long getId() {
         return id;
     }

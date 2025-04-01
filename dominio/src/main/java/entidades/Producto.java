@@ -24,7 +24,7 @@ public class Producto implements Serializable {
     @Enumerated(EnumType.STRING)
     private TipoProducto tipo;
 
-    @OneToMany(mappedBy = "producto", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "producto", cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
     List<IngredienteProducto> ingredientesProducto;
 
     public Producto() {

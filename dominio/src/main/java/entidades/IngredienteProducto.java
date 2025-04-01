@@ -15,7 +15,7 @@ public class IngredienteProducto implements Serializable {
     @Column(nullable = false)
     private Integer cantidad;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "ID_PRODUCTO", nullable = false)
     private Producto producto;
     
