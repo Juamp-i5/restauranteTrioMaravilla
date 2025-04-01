@@ -9,7 +9,7 @@ public class IngredienteProducto implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -18,12 +18,23 @@ public class IngredienteProducto implements Serializable {
     @ManyToOne
     @JoinColumn(name = "ID_PRODUCTO", nullable = false)
     private Producto producto;
+    
+    @ManyToOne
+    @JoinColumn(name = "ID_INGREDIENTE", nullable = false)
+    private Ingrediente ingrediente;
 
-    //INGREDIENTE
-    //
     public IngredienteProducto() {
     }
 
+    public IngredienteProducto(Long id, Integer cantidad) {
+        this.id = id;
+        this.cantidad = cantidad;
+    }
+
+    public IngredienteProducto(Integer cantidad) {
+        this.cantidad = cantidad;
+    }
+    
     public Long getId() {
         return id;
     }
@@ -47,5 +58,20 @@ public class IngredienteProducto implements Serializable {
     public void setProducto(Producto producto) {
         this.producto = producto;
     }
+
+    public Ingrediente getIngrediente() {
+        return ingrediente;
+    }
+
+    public void setIngrediente(Ingrediente ingrediente) {
+        this.ingrediente = ingrediente;
+    }
+
+    @Override
+    public String toString() {
+        return "IngredienteProducto{" + "id=" + id + ", cantidad=" + cantidad + ", producto=" + producto + ", ingrediente=" + ingrediente + '}';
+    }
+    
+    
 
 }
