@@ -25,6 +25,10 @@ public class Comanda implements Serializable {
     @Column(nullable = false)
     private LocalDateTime fechaHoraRegistro;
 
+    @ManyToOne()
+    @JoinColumn(name = "ID_MESA", nullable = false)
+    private Mesa mesa;
+
     @OneToMany(mappedBy = "comanda")
     private List<DetalleComanda> detallesComanda;
 
