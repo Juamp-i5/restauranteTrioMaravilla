@@ -8,15 +8,15 @@ import conexion.Conexion;
 import entidades.Ingrediente;
 import entidades.enums.UnidadMedida;
 import excepciones.PersistenciaException;
-import interfaces.IIngrediente;
 import java.util.List;
 import javax.persistence.EntityManager;
+import interfaces.IIngredienteDAO;
 
 /**
  *
  * @author norma
  */
-public class IngredienteDAO implements IIngrediente {
+public class IngredienteDAO implements IIngredienteDAO {
 
     @Override
     public Ingrediente persistirIngrediente(Ingrediente ingrediente) throws PersistenciaException {
@@ -180,6 +180,26 @@ public class IngredienteDAO implements IIngrediente {
                     .getResultList();
         } catch (Exception e) {
             throw new PersistenciaException("Error al obtener lista de ingredientes por unidad de medida", e);
+        } finally {
+            if (em != null && em.isOpen()) {
+                em.close();
+            }
+        }
+    }
+
+    @Override
+    public boolean comprobarExistenciaIngrediente(String nombre, UnidadMedida unidadMedida) throws PersistenciaException {
+        EntityManager em = Conexion.getEntityManager();
+        try {
+            Long count = em.createQuery(
+                    "SELECT COUNT(i) FROM Ingrediente i WHERE i.nombre = :nombre AND i.unidadMedida = :unidadMedida",
+                    Long.class)
+                    .setParameter("nombre", nombre)
+                    .setParameter("unidadMedida", unidadMedida)
+                    .getSingleResult();
+            return count > 0;
+        } catch (Exception e) {
+            throw new PersistenciaException("Error al comprobar la existencia del ingrediente", e);
         } finally {
             if (em != null && em.isOpen()) {
                 em.close();
