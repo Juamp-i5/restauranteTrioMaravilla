@@ -7,6 +7,7 @@ package control;
 import javax.swing.JFrame;
 import pantallas.PantallaInicioSesion;
 import pantallas.PantallaMenuOpciones;
+import pantallas.PantallaRegistroCliente;
 
 /**
  *
@@ -34,5 +35,11 @@ public class ControlNavegacion {
 
     public static void setModoMenu(ModoMenu modoMenu) {
         ControlNavegacion.modoMenu = modoMenu;
+    }
+    
+    public static void mostrarRegistroCliente() {
+        JFrame frame = new PantallaRegistroCliente();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 }

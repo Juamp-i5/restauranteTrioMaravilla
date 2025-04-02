@@ -79,6 +79,22 @@ public class Comanda implements Serializable {
         this.detallesComanda = detallesComanda;
     }
 
+    public Mesa getMesa() {
+        return mesa;
+    }
+
+    public void setMesa(Mesa mesa) {
+        this.mesa = mesa;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
     @Override
     public String toString() {
         return "Comanda{" + "id=" + id + ", folio=" + folio + ", estado=" + estado + ", fechaHoraRegistro=" + fechaHoraRegistro + ", mesa=" + mesa + ", detallesComanda=" + detallesComanda + ", cliente=" + cliente + '}';

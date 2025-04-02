@@ -3,8 +3,8 @@ package entidades;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 /**
  *
@@ -12,29 +12,24 @@ import javax.persistence.Entity;
  */
 @Entity
 public class ClienteFrecuente extends Cliente implements Serializable {
-    @Column(nullable = false)
+    @Transient
     private Integer puntosFidelidad;
     
-    @Column(nullable = false)
+    @Transient
     private Integer visitas;
     
-    @Column(nullable = false)
+    @Transient
     private Double totalGastado;
     
     public ClienteFrecuente() {
     }
 
-    public ClienteFrecuente(Integer puntosFidelidad, Integer visitas, Double totalGastado, Long idCliente, String nombres, String apellidoPaterno, String apellidoMaterno, String telefono, String correoElectronico, LocalDate fechaRegistro, List<Comanda> comandas) {
+    public ClienteFrecuente(Long idCliente, String nombres, String apellidoPaterno, String apellidoMaterno, String telefono, String correoElectronico, LocalDate fechaRegistro, List<Comanda> comandas) {
         super(idCliente, nombres, apellidoPaterno, apellidoMaterno, telefono, correoElectronico, fechaRegistro, comandas);
-        this.puntosFidelidad = puntosFidelidad;
-        this.visitas = visitas;
-        this.totalGastado = totalGastado;
     }
 
-    public ClienteFrecuente(Integer puntosFidelidad, Integer visitas, String nombres, String apellidoPaterno, String apellidoMaterno, String telefono, String correoElectronico, LocalDate fechaRegistro, List<Comanda> comandas) {
+    public ClienteFrecuente(String nombres, String apellidoPaterno, String apellidoMaterno, String telefono, String correoElectronico, LocalDate fechaRegistro, List<Comanda> comandas) {
         super(nombres, apellidoPaterno, apellidoMaterno, telefono, correoElectronico, fechaRegistro, comandas);
-        this.puntosFidelidad = puntosFidelidad;
-        this.visitas = visitas;
     }
 
     public Integer getPuntosFidelidad() {

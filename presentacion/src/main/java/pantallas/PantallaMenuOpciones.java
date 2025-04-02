@@ -180,7 +180,9 @@ public class PantallaMenuOpciones extends javax.swing.JFrame {
     }
 
     private void btnRegistrarClienteActionPerformed(java.awt.event.ActionEvent evt) {
-
+        ControlNavegacion.mostrarRegistroCliente();
+        
+        this.dispose();
     }
 
     private void btnProductosActionPerformed(java.awt.event.ActionEvent evt) {
