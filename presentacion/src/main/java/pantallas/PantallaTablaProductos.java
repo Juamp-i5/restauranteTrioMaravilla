@@ -2,6 +2,7 @@ package pantallas;
 
 import DTOs.salida.ProductoResumenDTO;
 import control.ControlNavegacion;
+import control.ModoTablaProductos;
 import entidades.enums.TipoProducto;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
@@ -9,11 +10,13 @@ import javax.swing.table.DefaultTableModel;
 public class PantallaTablaProductos extends javax.swing.JFrame {
 
     List<ProductoResumenDTO> productos;
+    ModoTablaProductos modo;
 
-    public PantallaTablaProductos(List<ProductoResumenDTO> productos) {
+    public PantallaTablaProductos(List<ProductoResumenDTO> productos, ModoTablaProductos modo) {
         initComponents();
 
         this.productos = productos;
+        this.modo = modo;
 
         for (TipoProducto tipo : TipoProducto.values()) {
             cmbCategoria.addItem(tipo.toString());
@@ -189,7 +192,13 @@ public class PantallaTablaProductos extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSeleccionarActionPerformed
 
     private void btnVolverAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverAtrasActionPerformed
-        ControlNavegacion.mostrarPantallaMenuProducto();
+        if (this.modo == ModoTablaProductos.COMANDA) {
+            ControlNavegacion.mostrarTipoCliente();
+        } else if (this.modo == ModoTablaProductos.CLIENTE) {
+            //
+        } else if (this.modo == ModoTablaProductos.PRODUCTO) {
+            ControlNavegacion.mostrarPantallaMenuProducto();
+        }
 
         this.dispose();
     }//GEN-LAST:event_btnVolverAtrasActionPerformed
@@ -207,7 +216,7 @@ public class PantallaTablaProductos extends javax.swing.JFrame {
     private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
         String filtroProducto = chkNombreProducto.isSelected() ? txtNombreProducto.getText().strip() : "";
         String filtroCategoria = chkCategoria.isSelected() ? cmbCategoria.getSelectedItem().toString().strip() : "";
-        ControlNavegacion.mostrarPantallaTablaProductos(filtroProducto, filtroCategoria);
+        ControlNavegacion.mostrarPantallaTablaProductos(filtroProducto, filtroCategoria, this.modo);
 
         this.dispose();
     }//GEN-LAST:event_btnFiltrarActionPerformed

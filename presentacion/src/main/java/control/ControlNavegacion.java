@@ -41,11 +41,11 @@ public class ControlNavegacion {
         frame.setVisible(true);
     }
     
-    public static void mostrarPantallaTablaProductos(){
-        mostrarPantallaTablaProductos("", "");
+    public static void mostrarPantallaTablaProductos(ModoTablaProductos modo){
+        mostrarPantallaTablaProductos("", "", modo);
     }
 
-    public static void mostrarPantallaTablaProductos(String filtroProducto, String filtroCategoria) {
+    public static void mostrarPantallaTablaProductos(String filtroProducto, String filtroCategoria, ModoTablaProductos modo) {
         List<ProductoResumenDTO> productos = new ArrayList<>();
         try {
             productos = productoBO.getProductosHabilitadosFiltrados(filtroProducto, filtroCategoria);
@@ -57,7 +57,7 @@ public class ControlNavegacion {
             System.exit(0);
         }
         
-        JFrame frame = new PantallaTablaProductos(productos);
+        JFrame frame = new PantallaTablaProductos(productos, modo);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }

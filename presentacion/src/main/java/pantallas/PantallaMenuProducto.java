@@ -1,6 +1,7 @@
 package pantallas;
 
 import control.ControlNavegacion;
+import control.ModoTablaProductos;
 
 public class PantallaMenuProducto extends javax.swing.JFrame {
 
@@ -100,7 +101,7 @@ public class PantallaMenuProducto extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAdministrarProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdministrarProductosActionPerformed
-        ControlNavegacion.mostrarPantallaTablaProductos();
+        ControlNavegacion.mostrarPantallaTablaProductos(ModoTablaProductos.PRODUCTO);
         
         this.dispose();
     }//GEN-LAST:event_btnAdministrarProductosActionPerformed
