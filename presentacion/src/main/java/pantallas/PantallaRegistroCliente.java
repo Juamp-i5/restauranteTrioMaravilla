@@ -4,19 +4,54 @@
  */
 package pantallas;
 
+import BOs.ClienteBO;
+import DTOs.entrada.ClienteNuevoDTO;
 import control.ControlNavegacion;
+import excepciones.NegocioException;
+import java.time.LocalDate;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author pablo
  */
 public class PantallaRegistroCliente extends javax.swing.JFrame {
+    ClienteBO cliente = new ClienteBO();
+    ControlNavegacion control = new ControlNavegacion();
 
     /**
      * Creates new form PantallaaRegistroCliente
      */
     public PantallaRegistroCliente() {
         initComponents();
+    }
+
+    private void validarRegistro() {
+        LocalDate fechaActual = LocalDate.now();
+              
+        String Nombres = EspacioTextoNombre.getText();
+        String ApellidoP = EspacioTextoApellidoP.getText();
+        String ApellidoM = EspacioTextoApellidoM.getText();
+        String Telefono = EspacioTextoTelefono.getText();
+        String Correo = EspacioTextoCorreo.getText();
+        
+        ClienteNuevoDTO clienteIngresado = new ClienteNuevoDTO();
+        clienteIngresado.setNombres(Nombres);
+        clienteIngresado.setApellidoP(ApellidoP);
+        clienteIngresado.setApellidoM(ApellidoM);
+        clienteIngresado.setTelefono(Telefono);
+        clienteIngresado.setCorreo(Correo);
+        clienteIngresado.setFechaRegistro(fechaActual);
+        try {
+            cliente.persistirClienteFrecuente(clienteIngresado);
+            JOptionPane.showMessageDialog(this, "Cliente registrado correctamente");
+            dispose();
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Ocurrió un error al procesar el cliente: ",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**
@@ -38,13 +73,13 @@ public class PantallaRegistroCliente extends javax.swing.JFrame {
         EspacioTextoNombre = new javax.swing.JTextField();
         lblSubtitulo1 = new javax.swing.JLabel();
         lblSubtitulo2 = new javax.swing.JLabel();
-        EspacioTextoNombre1 = new javax.swing.JTextField();
+        EspacioTextoApellidoP = new javax.swing.JTextField();
         lblSubtitulo3 = new javax.swing.JLabel();
-        EspacioTextoNombre2 = new javax.swing.JTextField();
+        EspacioTextoApellidoM = new javax.swing.JTextField();
         lblSubtitulo4 = new javax.swing.JLabel();
-        EspacioTextoNombre3 = new javax.swing.JTextField();
+        EspacioTextoTelefono = new javax.swing.JTextField();
         lblSubtitulo5 = new javax.swing.JLabel();
-        EspacioTextoNombre4 = new javax.swing.JTextField();
+        EspacioTextoCorreo = new javax.swing.JTextField();
 
         lblSubtitulo.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblSubtitulo.setText("¿Qué deseas hacer?");
@@ -83,36 +118,36 @@ public class PantallaRegistroCliente extends javax.swing.JFrame {
         lblSubtitulo2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblSubtitulo2.setText("Apellido paterno");
 
-        EspacioTextoNombre1.addActionListener(new java.awt.event.ActionListener() {
+        EspacioTextoApellidoP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EspacioTextoNombre1ActionPerformed(evt);
+                EspacioTextoApellidoPActionPerformed(evt);
             }
         });
 
         lblSubtitulo3.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblSubtitulo3.setText("Apellido materno");
 
-        EspacioTextoNombre2.addActionListener(new java.awt.event.ActionListener() {
+        EspacioTextoApellidoM.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EspacioTextoNombre2ActionPerformed(evt);
+                EspacioTextoApellidoMActionPerformed(evt);
             }
         });
 
         lblSubtitulo4.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblSubtitulo4.setText("Número de teléfono");
 
-        EspacioTextoNombre3.addActionListener(new java.awt.event.ActionListener() {
+        EspacioTextoTelefono.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EspacioTextoNombre3ActionPerformed(evt);
+                EspacioTextoTelefonoActionPerformed(evt);
             }
         });
 
         lblSubtitulo5.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblSubtitulo5.setText("Correo electrónico");
 
-        EspacioTextoNombre4.addActionListener(new java.awt.event.ActionListener() {
+        EspacioTextoCorreo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EspacioTextoNombre4ActionPerformed(evt);
+                EspacioTextoCorreoActionPerformed(evt);
             }
         });
 
@@ -137,13 +172,13 @@ public class PantallaRegistroCliente extends javax.swing.JFrame {
                 .addGap(59, 59, 59)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblSubtitulo5)
-                    .addComponent(EspacioTextoNombre4, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(EspacioTextoCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblSubtitulo4)
-                    .addComponent(EspacioTextoNombre3, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(EspacioTextoTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblSubtitulo3)
-                    .addComponent(EspacioTextoNombre2, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(EspacioTextoApellidoM, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblSubtitulo2)
-                    .addComponent(EspacioTextoNombre1, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(EspacioTextoApellidoP, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblSubtitulo1)
                     .addComponent(EspacioTextoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -162,19 +197,19 @@ public class PantallaRegistroCliente extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(lblSubtitulo2)
                 .addGap(4, 4, 4)
-                .addComponent(EspacioTextoNombre1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(EspacioTextoApellidoP, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(lblSubtitulo3)
                 .addGap(4, 4, 4)
-                .addComponent(EspacioTextoNombre2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(EspacioTextoApellidoM, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(lblSubtitulo4)
                 .addGap(4, 4, 4)
-                .addComponent(EspacioTextoNombre3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(EspacioTextoTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(lblSubtitulo5)
                 .addGap(4, 4, 4)
-                .addComponent(EspacioTextoNombre4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(EspacioTextoCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                 .addComponent(sepAbajo1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(3, 3, 3)
@@ -193,36 +228,36 @@ public class PantallaRegistroCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void btnConfirmarRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarRegistroActionPerformed
-
+        validarRegistro();
     }//GEN-LAST:event_btnConfirmarRegistroActionPerformed
 
     private void EspacioTextoNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EspacioTextoNombreActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_EspacioTextoNombreActionPerformed
 
-    private void EspacioTextoNombre1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EspacioTextoNombre1ActionPerformed
+    private void EspacioTextoApellidoPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EspacioTextoApellidoPActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_EspacioTextoNombre1ActionPerformed
+    }//GEN-LAST:event_EspacioTextoApellidoPActionPerformed
 
-    private void EspacioTextoNombre2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EspacioTextoNombre2ActionPerformed
+    private void EspacioTextoApellidoMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EspacioTextoApellidoMActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_EspacioTextoNombre2ActionPerformed
+    }//GEN-LAST:event_EspacioTextoApellidoMActionPerformed
 
-    private void EspacioTextoNombre3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EspacioTextoNombre3ActionPerformed
+    private void EspacioTextoTelefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EspacioTextoTelefonoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_EspacioTextoNombre3ActionPerformed
+    }//GEN-LAST:event_EspacioTextoTelefonoActionPerformed
 
-    private void EspacioTextoNombre4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EspacioTextoNombre4ActionPerformed
+    private void EspacioTextoCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EspacioTextoCorreoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_EspacioTextoNombre4ActionPerformed
+    }//GEN-LAST:event_EspacioTextoCorreoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField EspacioTextoApellidoM;
+    private javax.swing.JTextField EspacioTextoApellidoP;
+    private javax.swing.JTextField EspacioTextoCorreo;
     private javax.swing.JTextField EspacioTextoNombre;
-    private javax.swing.JTextField EspacioTextoNombre1;
-    private javax.swing.JTextField EspacioTextoNombre2;
-    private javax.swing.JTextField EspacioTextoNombre3;
-    private javax.swing.JTextField EspacioTextoNombre4;
+    private javax.swing.JTextField EspacioTextoTelefono;
     private javax.swing.JButton btnConfirmarRegistro;
     private javax.swing.JButton btnVolver;
     private javax.swing.JLabel lblSubtitulo;

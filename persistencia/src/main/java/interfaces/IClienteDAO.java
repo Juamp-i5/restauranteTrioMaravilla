@@ -23,4 +23,6 @@ public interface IClienteDAO {
     public Cliente persistirCliente(Cliente cliente) throws PersistenciaException;
     
     public void asignarComandaACliente(Long idComanda, Long idCliente) throws PersistenciaException;
+    
+//    public ClienteFrecuente calcularHistorialCliente(Long idCliente) throws PersistenciaException;
 }

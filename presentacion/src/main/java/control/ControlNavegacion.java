@@ -1,6 +1,7 @@
 package control;
 
 import BOs.ProductoBO;
+import DTOs.entrada.ClienteNuevoDTO;
 import DTOs.salida.ProductoResumenDTO;
 import excepciones.ListaVaciaException;
 import excepciones.NegocioException;
@@ -40,8 +41,8 @@ public class ControlNavegacion {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-    
-    public static void mostrarPantallaTablaProductos(ModoTablaProductos modo){
+
+    public static void mostrarPantallaTablaProductos(ModoTablaProductos modo) {
         mostrarPantallaTablaProductos("", "", modo);
     }
 
@@ -56,7 +57,7 @@ public class ControlNavegacion {
             e.printStackTrace();
             System.exit(0);
         }
-        
+
         JFrame frame = new PantallaTablaProductos(productos, modo);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
@@ -69,23 +70,36 @@ public class ControlNavegacion {
     public static void setModoMenu(ModoMenu modoMenu) {
         ControlNavegacion.modoMenu = modoMenu;
     }
-    
+
     public static void mostrarRegistroCliente() {
         JFrame frame = new PantallaRegistroCliente();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-    
+
     public static void mostrarTipoCliente() {
         JFrame frame = new PantallaTipoCliente();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-    
+
     public static void mostrarPantallaMenuIngrediente() {
         JFrame frame = new PantallaMenuIngrediente();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-    
+
+    public boolean validarRegistro(ClienteNuevoDTO cliente) {
+        if (cliente.getNombres()==null || cliente.getApellidoP()==null|| cliente.getTelefono()==null) {
+            JOptionPane.showMessageDialog(null, "Error: Todos los campos deben estar llenos", "Error de validación", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (!cliente.getTelefono().matches("\\d{12}")) {
+            JOptionPane.showMessageDialog(null, "Error: El formato no es vàlido para el telefono", "Error de validación", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        JOptionPane.showMessageDialog(null, "Cliente registrado correctamente", "Registro exitoso", JOptionPane.INFORMATION_MESSAGE);
+        return true;
+    }
+
 }

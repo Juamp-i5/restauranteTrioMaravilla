@@ -70,6 +70,15 @@ public class Cliente implements Serializable {
         this.comandas = comandas;
     }
 
+    public Cliente(String nombres, String apellidoPaterno, String apellidoMaterno, String telefono, String correoElectronico, LocalDate fechaRegistro) {
+        this.nombres = nombres;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.telefono = telefono;
+        this.correoElectronico = correoElectronico;
+        this.fechaRegistro = fechaRegistro;
+    }
+
     public Long getId() {
         return idCliente;
     }
@@ -132,6 +141,14 @@ public class Cliente implements Serializable {
 
     public void setFechaRegistro(LocalDate fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
+    }
+
+    public List<Comanda> getComandas() {
+        return comandas;
+    }
+
+    public void setComandas(List<Comanda> comandas) {
+        this.comandas = comandas;
     }
 
     @Override

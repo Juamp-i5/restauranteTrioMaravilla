@@ -14,7 +14,7 @@ import javax.persistence.RollbackException;
  *
  * @author pablo
  */
-public class ClienteDAO implements IClienteDAO{
+public class ClienteDAO implements IClienteDAO {
 
     @Override
     public ClienteFrecuente obtenerClienteFrecuente(Long idClienteFrecuente) throws PersistenciaException {
@@ -113,7 +113,7 @@ public class ClienteDAO implements IClienteDAO{
         EntityManager em = Conexion.getEntityManager();
         try {
             em.getTransaction().begin();
-            
+
             Cliente cliente = em.find(Cliente.class, idCliente);
             if (cliente == null) {
                 throw new PersistenciaException("Cliente con ID " + idCliente + " no encontrado.");
@@ -127,7 +127,7 @@ public class ClienteDAO implements IClienteDAO{
             if (comanda.getCliente() != null) {
                 throw new PersistenciaException("La comanda ya está asignada a un cliente.");
             }
-            
+
             comanda.setCliente(cliente);
             em.merge(comanda);
             em.getTransaction().commit();
@@ -139,4 +139,22 @@ public class ClienteDAO implements IClienteDAO{
         }
     }
 
+//    @Override
+//    public ClienteFrecuente calcularHistorialCliente(Long idCliente) throws PersistenciaException {
+//        ClienteFrecuente cliente = obtenerClienteFrecuente(idCliente);
+//        if (cliente == null) {
+//            throw new PersistenciaException("Cliente no encontrado");
+//        }
+//
+//        List<Comanda> historialCompras = cliente.getComandas();
+//        int totalVisitas = historialCompras.size();
+//        double gastoTotal = historialCompras.stream().mapToDouble(Comanda::getTotal).sum();
+//        int puntosFidelidad = (int) (gastoTotal / 20);
+//        
+//        cliente.setVisitas(totalVisitas);
+//        cliente.getTotalGastado(gastoTotal);
+//        cliente.setPuntosFidelidad(puntosFidelidad);
+//
+//        return cliente;
+//    }
 }

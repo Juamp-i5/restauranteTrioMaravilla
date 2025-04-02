@@ -66,6 +66,22 @@ public class PantallaTipoCliente extends javax.swing.JFrame {
                 dispose();
             }
         });
+        
+        BTN_CLIENTE.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                dispose();
+            }
+        });
+        
+        BTN_CLIENTE_FRECUENTE.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                dispose();
+            }
+        });
     }
 
     /**

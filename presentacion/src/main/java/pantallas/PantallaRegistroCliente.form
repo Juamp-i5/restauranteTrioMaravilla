@@ -56,13 +56,13 @@
               <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="lblSubtitulo5" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="EspacioTextoNombre4" alignment="0" min="-2" pref="550" max="-2" attributes="0"/>
+                  <Component id="EspacioTextoCorreo" alignment="0" min="-2" pref="550" max="-2" attributes="0"/>
                   <Component id="lblSubtitulo4" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="EspacioTextoNombre3" alignment="0" min="-2" pref="550" max="-2" attributes="0"/>
+                  <Component id="EspacioTextoTelefono" alignment="0" min="-2" pref="550" max="-2" attributes="0"/>
                   <Component id="lblSubtitulo3" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="EspacioTextoNombre2" alignment="0" min="-2" pref="550" max="-2" attributes="0"/>
+                  <Component id="EspacioTextoApellidoM" alignment="0" min="-2" pref="550" max="-2" attributes="0"/>
                   <Component id="lblSubtitulo2" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="EspacioTextoNombre1" alignment="0" min="-2" pref="550" max="-2" attributes="0"/>
+                  <Component id="EspacioTextoApellidoP" alignment="0" min="-2" pref="550" max="-2" attributes="0"/>
                   <Component id="lblSubtitulo1" min="-2" max="-2" attributes="0"/>
                   <Component id="EspacioTextoNombre" min="-2" pref="550" max="-2" attributes="0"/>
               </Group>
@@ -84,19 +84,19 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="lblSubtitulo2" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-              <Component id="EspacioTextoNombre1" min="-2" pref="30" max="-2" attributes="0"/>
+              <Component id="EspacioTextoApellidoP" min="-2" pref="30" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="lblSubtitulo3" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-              <Component id="EspacioTextoNombre2" min="-2" pref="30" max="-2" attributes="0"/>
+              <Component id="EspacioTextoApellidoM" min="-2" pref="30" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="lblSubtitulo4" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-              <Component id="EspacioTextoNombre3" min="-2" pref="30" max="-2" attributes="0"/>
+              <Component id="EspacioTextoTelefono" min="-2" pref="30" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="lblSubtitulo5" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-              <Component id="EspacioTextoNombre4" min="-2" pref="30" max="-2" attributes="0"/>
+              <Component id="EspacioTextoCorreo" min="-2" pref="30" max="-2" attributes="0"/>
               <EmptySpace pref="43" max="32767" attributes="0"/>
               <Component id="sepAbajo1" min="-2" pref="10" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
@@ -168,9 +168,9 @@
         <Property name="text" type="java.lang.String" value="Apellido paterno"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="EspacioTextoNombre1">
+    <Component class="javax.swing.JTextField" name="EspacioTextoApellidoP">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="EspacioTextoNombre1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="EspacioTextoApellidoPActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="lblSubtitulo3">
@@ -181,9 +181,9 @@
         <Property name="text" type="java.lang.String" value="Apellido materno"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="EspacioTextoNombre2">
+    <Component class="javax.swing.JTextField" name="EspacioTextoApellidoM">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="EspacioTextoNombre2ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="EspacioTextoApellidoMActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="lblSubtitulo4">
@@ -194,9 +194,9 @@
         <Property name="text" type="java.lang.String" value="N&#xfa;mero de tel&#xe9;fono"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="EspacioTextoNombre3">
+    <Component class="javax.swing.JTextField" name="EspacioTextoTelefono">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="EspacioTextoNombre3ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="EspacioTextoTelefonoActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="lblSubtitulo5">
@@ -207,9 +207,9 @@
         <Property name="text" type="java.lang.String" value="Correo electr&#xf3;nico"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="EspacioTextoNombre4">
+    <Component class="javax.swing.JTextField" name="EspacioTextoCorreo">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="EspacioTextoNombre4ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="EspacioTextoCorreoActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
