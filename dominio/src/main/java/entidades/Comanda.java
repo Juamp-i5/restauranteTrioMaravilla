@@ -29,7 +29,7 @@ public class Comanda implements Serializable {
     @JoinColumn(name = "ID_MESA", nullable = false)
     private Mesa mesa;
 
-    @OneToMany(mappedBy = "comanda")
+    @OneToMany(mappedBy = "comanda", cascade = {CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<DetalleComanda> detallesComanda;
     
     @ManyToOne

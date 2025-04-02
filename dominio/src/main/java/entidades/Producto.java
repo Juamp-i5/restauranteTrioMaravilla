@@ -29,7 +29,7 @@ public class Producto implements Serializable {
     @Enumerated
     private EstadoProducto estado = EstadoProducto.HABILITADO;
 
-    @OneToMany(mappedBy = "producto", cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "producto", cascade = {CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.LAZY)
     List<IngredienteProducto> ingredientesProducto;
 
     public Producto() {
