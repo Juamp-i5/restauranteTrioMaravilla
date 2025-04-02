@@ -10,6 +10,7 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import pantallas.PantallaInicioSesion;
+import pantallas.PantallaMenuIngrediente;
 import pantallas.PantallaMenuOpciones;
 import pantallas.PantallaRegistroCliente;
 import pantallas.PantallaTipoCliente;
@@ -81,5 +82,10 @@ public class ControlNavegacion {
         frame.setVisible(true);
     }
     
+    public static void mostrarPantallaMenuIngrediente() {
+        JFrame frame = new PantallaMenuIngrediente();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
     
 }

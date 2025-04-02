@@ -192,7 +192,9 @@ public class PantallaMenuOpciones extends javax.swing.JFrame {
     }
 
     private void btnIngredientesActionPerformed(java.awt.event.ActionEvent evt) {
-
+        ControlNavegacion.mostrarPantallaMenuIngrediente();
+        
+        this.dispose();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
