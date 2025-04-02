@@ -29,12 +29,13 @@ public class ClienteDAO implements IClienteDAO{
     }
 
     @Override
-    public List<ClienteFrecuente> obtenerClienteFrecuentePorNombre(String nombreCliente) throws PersistenciaException {
+    public List<ClienteFrecuente> obtenerClientesFrecuentesPorNombre(String nombreCliente) throws PersistenciaException {
         EntityManager em = Conexion.getEntityManager();
         try {
-            return em.createQuery("SELECT c FROM ClienteFrecuente c WHERE c.nombres = :nombre", ClienteFrecuente.class)
+            List<ClienteFrecuente> lista = em.createQuery("SELECT c FROM ClienteFrecuente c WHERE c.nombres = :nombre", ClienteFrecuente.class)
                     .setParameter("nombre", nombreCliente)
                     .getResultList();
+            return lista;
         } catch (Exception e) {
             throw new PersistenciaException("Error al obtener el cliente frecuente por nombre", e);
         } finally {
@@ -43,12 +44,13 @@ public class ClienteDAO implements IClienteDAO{
     }
 
     @Override
-    public List<ClienteFrecuente> obtenerClienteFrecuentePorCorreo(String CorreoCliente) throws PersistenciaException {
+    public List<ClienteFrecuente> obtenerClientesFrecuentesPorCorreo(String CorreoCliente) throws PersistenciaException {
         EntityManager em = Conexion.getEntityManager();
         try {
-            return em.createQuery("SELECT c FROM ClienteFrecuente c WHERE c.correoElectronico = :correo", ClienteFrecuente.class)
+            List<ClienteFrecuente> lista = em.createQuery("SELECT c FROM ClienteFrecuente c WHERE c.correoElectronico = :correo", ClienteFrecuente.class)
                     .setParameter("correo", CorreoCliente)
                     .getResultList();
+            return lista;
         } catch (Exception e) {
             throw new PersistenciaException("Error al obtener el cliente frecuente por correo", e);
         } finally {
@@ -60,9 +62,11 @@ public class ClienteDAO implements IClienteDAO{
     public List<ClienteFrecuente> obtenerClienteFrecuentePorTelefono(String TelefonoCliente) throws PersistenciaException {
         EntityManager em = Conexion.getEntityManager();
         try {
-            return em.createQuery("SELECT c FROM ClienteFrecuente c WHERE c.telefono = :telefono", ClienteFrecuente.class)
+            List<ClienteFrecuente> lista = em.createQuery("SELECT c FROM ClienteFrecuente c WHERE c.telefono = :telefono", ClienteFrecuente.class)
                     .setParameter("telefono", TelefonoCliente)
                     .getResultList();
+            System.out.println(lista);
+            return lista;
         } catch (Exception e) {
             throw new PersistenciaException("Error al obtener el cliente frecuente por telefono", e);
         } finally {

@@ -12,9 +12,9 @@ import java.util.List;
 public interface IClienteDAO {
     public ClienteFrecuente obtenerClienteFrecuente(Long idClienteFrecuente) throws PersistenciaException;
     
-    public List<ClienteFrecuente> obtenerClienteFrecuentePorNombre(String nombreCliente) throws PersistenciaException;
+    public List<ClienteFrecuente> obtenerClientesFrecuentesPorNombre(String nombreCliente) throws PersistenciaException;
     
-    public List<ClienteFrecuente> obtenerClienteFrecuentePorCorreo(String CorreoCliente) throws PersistenciaException;
+    public List<ClienteFrecuente> obtenerClientesFrecuentesPorCorreo(String CorreoCliente) throws PersistenciaException;
     
     public List<ClienteFrecuente> obtenerClienteFrecuentePorTelefono(String TelefonoCliente) throws PersistenciaException;
     
