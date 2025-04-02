@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import pantallas.PantallaInicioSesion;
 import pantallas.PantallaMenuOpciones;
 import pantallas.PantallaRegistroCliente;
+import pantallas.PantallaTipoCliente;
 
 /**
  *
@@ -42,4 +43,12 @@ public class ControlNavegacion {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
+    
+    public static void mostrarTipoCliente() {
+        JFrame frame = new PantallaTipoCliente();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+    
+    
 }
