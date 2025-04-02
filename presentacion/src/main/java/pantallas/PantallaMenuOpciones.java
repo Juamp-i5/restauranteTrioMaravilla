@@ -63,7 +63,7 @@ public class PantallaMenuOpciones extends javax.swing.JFrame {
         pnlBotones = new javax.swing.JPanel();
         btnLogOut = new javax.swing.JButton();
         btnReportes = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnInsertarMesas = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -101,11 +101,11 @@ public class PantallaMenuOpciones extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton1.setText("Insertar mesas");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnInsertarMesas.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnInsertarMesas.setText("Insertar mesas");
+        btnInsertarMesas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnInsertarMesasActionPerformed(evt);
             }
         });
 
@@ -128,7 +128,7 @@ public class PantallaMenuOpciones extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblTitulo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnInsertarMesas, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -137,7 +137,7 @@ public class PantallaMenuOpciones extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblTitulo)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnInsertarMesas, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(sepArriba, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -167,9 +167,9 @@ public class PantallaMenuOpciones extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnLogOutActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnInsertarMesasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertarMesasActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnInsertarMesasActionPerformed
 
     private void btnLevantarComandaActionPerformed(java.awt.event.ActionEvent evt) {
 
@@ -186,7 +186,9 @@ public class PantallaMenuOpciones extends javax.swing.JFrame {
     }
 
     private void btnProductosActionPerformed(java.awt.event.ActionEvent evt) {
+        ControlNavegacion.mostrarPantallaMenuProducto();
 
+        this.dispose();
     }
 
     private void btnIngredientesActionPerformed(java.awt.event.ActionEvent evt) {
@@ -194,9 +196,9 @@ public class PantallaMenuOpciones extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnInsertarMesas;
     private javax.swing.JButton btnLogOut;
     private javax.swing.JButton btnReportes;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel lblSubtitulo;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JPanel pnlBotones;

@@ -13,6 +13,8 @@ public interface IProductoDAO {
     
     public List<Producto> obtenerProductosDisponibles() throws PersistenciaException;
     
+    public List<Producto> obtenerProductosHabilitadosFiltrados(String filtroProducto, String filtroCategoria) throws PersistenciaException;
+    
     public Boolean isProductoDisponible(Long idProducto) throws PersistenciaException;
     
     public Producto persistirProducto(Producto producto) throws PersistenciaException;

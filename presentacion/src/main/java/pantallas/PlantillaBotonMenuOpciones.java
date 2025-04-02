@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package pantallas;
 
 import java.awt.Color;
@@ -9,10 +5,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import javax.swing.JButton;
 
-/**
- *
- * @author Jp
- */
 public class PlantillaBotonMenuOpciones extends JButton {
 
     private final Dimension DIMENSION_BOTONES = new Dimension(140, 250);

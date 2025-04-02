@@ -33,7 +33,7 @@ public class Comanda implements Serializable {
     private List<DetalleComanda> detallesComanda;
     
     @ManyToOne
-    @JoinColumn(name = "ID_CLIENTE",nullable = false)
+    @JoinColumn(name = "ID_CLIENTE")
     private Cliente cliente;
 
     public Comanda() {

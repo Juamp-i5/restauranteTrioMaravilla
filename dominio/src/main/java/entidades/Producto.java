@@ -26,7 +26,7 @@ public class Producto implements Serializable {
     private TipoProducto tipo;
 
     @Column(nullable = false)
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private EstadoProducto estado = EstadoProducto.HABILITADO;
 
     @OneToMany(mappedBy = "producto", cascade = {CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.LAZY)
