@@ -29,9 +29,7 @@ public interface IIngredienteDAO {
 
     public boolean reducirStock(Long idIngrediente, Integer cantidad) throws PersistenciaException;
 
-    public List<Ingrediente> obtenerIngredientesPorNombre(String nombre) throws PersistenciaException;
-
-    public List<Ingrediente> obtenerIngredientesPorUnidadMedida(UnidadMedida unidadMedida) throws PersistenciaException;
+    public List<Ingrediente> obtenerIngredientesFiltrados(String filtroNombre, String filtroUnidad) throws PersistenciaException;
 
     public boolean comprobarExistenciaIngrediente(String nombre, UnidadMedida unidadMedida) throws PersistenciaException;
 

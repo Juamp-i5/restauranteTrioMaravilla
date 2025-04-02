@@ -11,6 +11,7 @@ import excepciones.PersistenciaException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import interfaces.IIngredienteDAO;
+import javax.persistence.Query;
 
 /**
  *
@@ -156,30 +157,34 @@ public class IngredienteDAO implements IIngredienteDAO {
     }
 
     @Override
-    public List<Ingrediente> obtenerIngredientesPorNombre(String nombre) throws PersistenciaException {
+    public List<Ingrediente> obtenerIngredientesFiltrados(String filtroNombre, String filtroUnidad) throws PersistenciaException {
         EntityManager em = Conexion.getEntityManager();
         try {
-            return em.createQuery("SELECT i FROM Ingrediente i WHERE i.nombre LIKE :nombre", Ingrediente.class)
-                    .setParameter("nombre", "%" + nombre + "%")
-                    .getResultList();
-        } catch (Exception e) {
-            throw new PersistenciaException("Error al obtener lista de ingredientes por nombre", e);
-        } finally {
-            if (em != null && em.isOpen()) {
-                em.close();
-            }
-        }
-    }
 
-    @Override
-    public List<Ingrediente> obtenerIngredientesPorUnidadMedida(UnidadMedida unidadMedida) throws PersistenciaException {
-        EntityManager em = Conexion.getEntityManager();
-        try {
-            return em.createQuery("SELECT i FROM Ingrediente i WHERE i.unidadMedida = :unidadMedida", Ingrediente.class)
-                    .setParameter("unidadMedida", unidadMedida)
-                    .getResultList();
+            String consulta = "SELECT i FROM Ingrediente i WHERE 1 = 1";
+
+            if (!filtroNombre.isEmpty()) {
+                consulta += " AND i.nombre LIKE :nombre";
+            }
+
+            if (!filtroUnidad.isEmpty()) {
+                consulta += " AND i.unidadMedida = :unidadMedida";
+            }
+
+            Query query = em.createQuery(consulta, Ingrediente.class);
+
+            if (!filtroNombre.isEmpty()) {
+                query.setParameter("nombre", "%" + filtroNombre + "%");
+            }
+            if (!filtroUnidad.isEmpty()) {
+                query.setParameter("unidadMedida", UnidadMedida.valueOf(filtroUnidad));
+            }
+
+            return query.getResultList();
+        } catch (IllegalArgumentException e) {
+            throw new PersistenciaException("Unidad de medida no válida: " + filtroUnidad, e);
         } catch (Exception e) {
-            throw new PersistenciaException("Error al obtener lista de ingredientes por unidad de medida", e);
+            throw new PersistenciaException("Error al obtener la lista de ingredientes filtrados", e);
         } finally {
             if (em != null && em.isOpen()) {
                 em.close();
@@ -206,5 +211,7 @@ public class IngredienteDAO implements IIngredienteDAO {
             }
         }
     }
+    
+    
 
 }

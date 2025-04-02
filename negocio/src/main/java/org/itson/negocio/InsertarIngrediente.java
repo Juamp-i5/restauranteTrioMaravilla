@@ -17,7 +17,7 @@ import excepciones.PersistenciaException;
 public class InsertarIngrediente {
 
     public static void main(String[] args) {
-        try {
+         try {
             IngredienteNuevoDTO ingrediente = new IngredienteNuevoDTO("Harina", UnidadMedida.GRAMOS, 100);
 
             IngredienteBO ingredienteBO = new IngredienteBO();

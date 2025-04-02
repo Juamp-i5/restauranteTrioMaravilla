@@ -5,7 +5,10 @@
 package mappers;
 
 import DTOs.entrada.IngredienteNuevoDTO;
+import DTOs.salida.IngredienteViejoDTO;
 import entidades.Ingrediente;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -18,5 +21,41 @@ public class MapperIngrediente {
             return null;
         }
         return new Ingrediente(dto.getNombre(), dto.getUnidadMedida(), dto.getCantidadStock());
+    }
+
+    public static IngredienteViejoDTO toViejoDTO(Ingrediente ingrediente) {
+        if (ingrediente == null) {
+            return null;
+        }
+        return new IngredienteViejoDTO(
+                ingrediente.getId(),
+                ingrediente.getNombre(),
+                ingrediente.getUnidadMedida(),
+                ingrediente.getCantidadStock()
+        );
+    }
+
+    public static Ingrediente toEntity(IngredienteViejoDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+        return new Ingrediente(
+                dto.getId(),
+                dto.getNombre(),
+                dto.getUnidadMedida(),
+                dto.getCantidadStock()
+        );
+    }
+    
+    public static List<IngredienteViejoDTO> toViejoDTOList(List<Ingrediente> listaIngredientes) {
+        if (listaIngredientes == null || listaIngredientes.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        List<IngredienteViejoDTO> listaDTO = new ArrayList<>();
+        for (Ingrediente ingrediente : listaIngredientes) {
+            listaDTO.add(toViejoDTO(ingrediente));
+        }
+        return listaDTO;
     }
 }
