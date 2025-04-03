@@ -1,4 +1,4 @@
-package entidades.enums;
+package enums;
 
 public enum EstadoComanda {
     REGISTRADA,

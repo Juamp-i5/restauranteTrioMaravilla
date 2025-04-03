@@ -7,7 +7,7 @@ package interfaces;
 import DTOs.entrada.IngredienteNuevoDTO;
 import DTOs.salida.IngredienteViejoDTO;
 import DTOs.salida.UnidadMedidaDTO;
-import entidades.enums.UnidadMedida;
+import enums.UnidadMedida;
 import excepciones.NegocioException;
 import excepciones.PersistenciaException;
 import java.util.List;

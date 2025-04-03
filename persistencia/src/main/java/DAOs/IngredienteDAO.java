@@ -6,7 +6,7 @@ package DAOs;
 
 import conexion.Conexion;
 import entidades.Ingrediente;
-import entidades.enums.UnidadMedida;
+import enums.UnidadMedida;
 import excepciones.PersistenciaException;
 import java.util.List;
 import javax.persistence.EntityManager;

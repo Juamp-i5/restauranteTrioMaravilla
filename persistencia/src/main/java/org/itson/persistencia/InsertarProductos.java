@@ -6,7 +6,7 @@ package org.itson.persistencia;
 
 import DAOs.ProductoDAO;
 import entidades.Producto;
-import entidades.enums.TipoProducto;
+import enums.TipoProducto;
 import excepciones.PersistenciaException;
 
 /**

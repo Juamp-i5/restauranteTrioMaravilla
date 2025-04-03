@@ -6,7 +6,7 @@ package org.itson.persistencia;
 
 import DAOs.IngredienteDAO;
 import entidades.Ingrediente;
-import entidades.enums.UnidadMedida;
+import enums.UnidadMedida;
 import excepciones.PersistenciaException;
 
 /**

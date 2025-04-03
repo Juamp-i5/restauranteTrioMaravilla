@@ -67,18 +67,7 @@ public class ControlNavegacion {
     }
 
     public static void mostrarPantallaTablaProductos(String filtroProducto, String filtroCategoria, ModoTablaProductos modo) {
-        List<ProductoResumenDTO> productos = new ArrayList<>();
-        try {
-            productos = productoBO.getProductosHabilitadosFiltrados(filtroProducto, filtroCategoria);
-        } catch (ListaVaciaException ex) {
-            JOptionPane.showMessageDialog(null, "No hay productos", "Alerta", JOptionPane.INFORMATION_MESSAGE);
-        } catch (NegocioException e) {
-            JOptionPane.showMessageDialog(null, "Error desconocido, ver consola", "Error", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-            System.exit(0);
-        }
-
-        JFrame frame = new PantallaTablaProductos(productos, modo);
+        JFrame frame = new PantallaTablaProductos(null, modo);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
@@ -166,8 +155,8 @@ public class ControlNavegacion {
 
     public static void mostrarPantallaTablaCliente(String filtroNombre, String filtroCorreo, String filtroTelefono) {
         List<ClienteViejoDTO> clientes = new ArrayList<>();
-        ComandaViejaDTO comanda = new ComandaViejaDTO();       
-        
+        ComandaViejaDTO comanda = new ComandaViejaDTO();
+
         try {
             clientes = clienteBO.obtenerClientesFiltrados(filtroNombre, filtroCorreo, filtroTelefono);
         } catch (ListaVaciaException ex) {
@@ -178,8 +167,22 @@ public class ControlNavegacion {
             System.exit(0);
         }
 
-        JFrame frame = new PantallaTablaClientes(clientes,comanda);
+        JFrame frame = new PantallaTablaClientes(clientes, comanda);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-    }    
+    }
+
+    public static List<ProductoResumenDTO> obtenerProductos(String filtroProducto, String filtroCategoria) {
+        List<ProductoResumenDTO> productos = new ArrayList<>();
+        try {
+            productos = productoBO.getProductosHabilitadosFiltrados(filtroProducto, filtroCategoria);
+            return productos;
+        } catch (ListaVaciaException ex) {
+        } catch (NegocioException e) {
+            JOptionPane.showMessageDialog(null, "Error desconocido, ver consola", "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+            System.exit(0);
+        }
+        return null;
+    }
 }

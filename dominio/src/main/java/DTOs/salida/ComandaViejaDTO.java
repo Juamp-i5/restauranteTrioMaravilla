@@ -4,7 +4,7 @@
  */
 package DTOs.salida;
 
-import entidades.enums.EstadoComanda;
+import enums.EstadoComanda;
 import java.time.LocalDate;
 
 /**

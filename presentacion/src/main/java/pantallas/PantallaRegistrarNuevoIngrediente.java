@@ -4,7 +4,7 @@ import BOs.IngredienteBO;
 import DTOs.entrada.IngredienteNuevoDTO;
 import DTOs.salida.UnidadMedidaDTO;
 import control.ControlNavegacion;
-import entidades.enums.UnidadMedida;
+import enums.UnidadMedida;
 import excepciones.NegocioException;
 import excepciones.PersistenciaException;
 import interfaces.IIngredienteBO;

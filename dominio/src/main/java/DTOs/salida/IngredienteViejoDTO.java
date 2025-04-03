@@ -4,7 +4,7 @@
  */
 package DTOs.salida;
 
-import entidades.enums.UnidadMedida;
+import enums.UnidadMedida;
 
 /**
  *
