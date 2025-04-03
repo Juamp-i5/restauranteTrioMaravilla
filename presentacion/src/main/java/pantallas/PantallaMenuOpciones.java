@@ -1,7 +1,7 @@
 package pantallas;
 
 import control.ControlNavegacion;
-import control.ModoMenu;
+import control.enums.ModoMenu;
 import java.awt.FlowLayout;
 import javax.swing.JButton;
 
@@ -168,11 +168,13 @@ public class PantallaMenuOpciones extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLogOutActionPerformed
 
     private void btnInsertarMesasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertarMesasActionPerformed
-        // TODO add your handling code here:
+        ControlNavegacion.agregarMesas();
     }//GEN-LAST:event_btnInsertarMesasActionPerformed
 
     private void btnLevantarComandaActionPerformed(java.awt.event.ActionEvent evt) {
-
+        ControlNavegacion.mostrarPantallaMesas();
+        
+        this.dispose();
     }
 
     private void btnComandasPorRealizarActionPerformed(java.awt.event.ActionEvent evt) {
@@ -181,7 +183,7 @@ public class PantallaMenuOpciones extends javax.swing.JFrame {
 
     private void btnRegistrarClienteActionPerformed(java.awt.event.ActionEvent evt) {
         ControlNavegacion.mostrarRegistroCliente();
-        
+
         this.dispose();
     }
 
@@ -193,7 +195,7 @@ public class PantallaMenuOpciones extends javax.swing.JFrame {
 
     private void btnIngredientesActionPerformed(java.awt.event.ActionEvent evt) {
         ControlNavegacion.mostrarPantallaMenuIngrediente();
-        
+
         this.dispose();
     }
 

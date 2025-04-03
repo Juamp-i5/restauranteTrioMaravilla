@@ -1,7 +1,7 @@
 package pantallas;
 
 import control.ControlNavegacion;
-import control.ModoMenu;
+import control.enums.ModoMenu;
 
 public class PantallaInicioSesion extends javax.swing.JFrame {
 

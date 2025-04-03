@@ -1,24 +1,35 @@
 package control;
 
+import BOs.MesaBO;
+import control.enums.ModoMenu;
+import control.enums.ModoTablaProductos;
 import BOs.ClienteBO;
 import BOs.ProductoBO;
 import DTOs.entrada.ClienteNuevoDTO;
+import DTOs.salida.MostrarMesaDTO;
+import DTOs.salida.ProductoIngredientesDTO;
 import DTOs.salida.ClienteViejoDTO;
 import DTOs.salida.ProductoResumenDTO;
+import control.enums.ModoDetallesProducto;
 import excepciones.ListaVaciaException;
 import excepciones.NegocioException;
+import interfaces.IMesaBO;
 import interfaces.IClienteBO;
 import interfaces.IProductoBO;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import pantallas.PantallaDetallesProducto;
 import pantallas.PantallaInicioSesion;
 import pantallas.PantallaMenuIngrediente;
 import pantallas.PantallaMenuOpciones;
 import pantallas.PantallaRegistroCliente;
 import pantallas.PantallaTipoCliente;
 import pantallas.PantallaMenuProducto;
+import pantallas.PantallaMesas;
 import pantallas.PantallaRegistrarNuevoIngrediente;
 import pantallas.PantallaTablaClientes;
 import pantallas.PantallaTablaProductos;
@@ -28,6 +39,7 @@ public class ControlNavegacion {
     private static ModoMenu modoMenu;
 
     private static IProductoBO productoBO = new ProductoBO();
+    private static IMesaBO mesaBO = new MesaBO();
     private static IClienteBO clienteBO = new ClienteBO();
 
     public static void mostrarPantallaInicioSesion() {
@@ -95,8 +107,24 @@ public class ControlNavegacion {
         frame.setVisible(true);
     }
 
+    public static void mostrarPantallaMesas() {
+        List<MostrarMesaDTO> mesasDisponibles;
+        try {
+            mesasDisponibles = mesaBO.obtenerMesasDisponibles();
+            JFrame frame = new PantallaMesas(mesasDisponibles);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        } catch (NegocioException ex) {
+            JOptionPane.showMessageDialog(null, "Error desconocido, mira consola", "Error", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+        } catch (ListaVaciaException ex) {
+            JOptionPane.showMessageDialog(null, "No hay mesas disponibles", "Atencion", JOptionPane.WARNING_MESSAGE);
+        }
+
+    }
+
     public boolean validarRegistro(ClienteNuevoDTO cliente) {
-        if (cliente.getNombres()==null || cliente.getApellidoP()==null|| cliente.getTelefono()==null) {
+        if (cliente.getNombres() == null || cliente.getApellidoP() == null || cliente.getTelefono() == null) {
             JOptionPane.showMessageDialog(null, "Error: Todos los campos deben estar llenos", "Error de validación", JOptionPane.ERROR_MESSAGE);
             return false;
         }
@@ -107,17 +135,33 @@ public class ControlNavegacion {
         JOptionPane.showMessageDialog(null, "Cliente registrado correctamente", "Registro exitoso", JOptionPane.INFORMATION_MESSAGE);
         return true;
     }
-    
+
     public static void mostrarPantallaRegistrarNuevoIngrediente() {
         JFrame frame = new PantallaRegistrarNuevoIngrediente();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-    
-    public static void mostrarPantallaTablaCliente(){
-        mostrarPantallaTablaCliente("","","");
+
+    public static void mostrarPantallaDetallesProducto(Long idProducto, ModoDetallesProducto modo) {
+        ProductoIngredientesDTO producto = null;
+        JFrame frame = new PantallaDetallesProducto(producto, modo);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
-    
+
+    public static void agregarMesas() {
+        try {
+            mesaBO.persistirMuchasMesas();
+            JOptionPane.showMessageDialog(null, "Mesas agregadas", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+        } catch (NegocioException ex) {
+            JOptionPane.showMessageDialog(null, "Ya estan agregadas las mesas", "Alerta", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    public static void mostrarPantallaTablaCliente() {
+        mostrarPantallaTablaCliente("", "", "");
+    }
+
     public static void mostrarPantallaTablaCliente(String filtroNombre, String filtroCorreo, String filtroTelefono) {
         List<ClienteViejoDTO> clientes = new ArrayList<>();
         try {
@@ -129,7 +173,7 @@ public class ControlNavegacion {
             e.printStackTrace();
             System.exit(0);
         }
-        
+
         JFrame frame = new PantallaTablaClientes(clientes);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);

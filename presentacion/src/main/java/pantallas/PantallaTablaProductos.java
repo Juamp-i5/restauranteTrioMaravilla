@@ -2,15 +2,19 @@ package pantallas;
 
 import DTOs.salida.ProductoResumenDTO;
 import control.ControlNavegacion;
-import control.ModoTablaProductos;
+import control.enums.ModoDetallesProducto;
+import control.enums.ModoTablaProductos;
 import entidades.enums.TipoProducto;
 import java.util.List;
+import java.util.Optional;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class PantallaTablaProductos extends javax.swing.JFrame {
 
     List<ProductoResumenDTO> productos;
     ModoTablaProductos modo;
+    DefaultTableModel modelo;
 
     public PantallaTablaProductos(List<ProductoResumenDTO> productos, ModoTablaProductos modo) {
         initComponents();
@@ -22,7 +26,7 @@ public class PantallaTablaProductos extends javax.swing.JFrame {
             cmbCategoria.addItem(tipo.toString());
         }
 
-        DefaultTableModel modelo = (DefaultTableModel) tblProductos.getModel();
+        modelo = (DefaultTableModel) tblProductos.getModel();
         for (ProductoResumenDTO producto : productos) {
             Object[] fila = {
                 producto.getId(),
@@ -193,7 +197,23 @@ public class PantallaTablaProductos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
+        int filaSeleccionada = tblProductos.getSelectedRow();
+        Long id = Optional.ofNullable(filaSeleccionada != -1 ? modelo.getValueAt(filaSeleccionada, 0) : null)
+                .map(valor -> (valor instanceof Number) ? ((Number) valor).longValue() : Long.valueOf(valor.toString()))
+                .orElse(null);
+        
+        if(id == null) {
+            JOptionPane.showMessageDialog(null, "Selecciona un producto");
+            return;
+        }
 
+        if (this.modo == ModoTablaProductos.COMANDA) {
+
+        } else if (this.modo == ModoTablaProductos.PRODUCTO) {
+            ControlNavegacion.mostrarPantallaDetallesProducto(id, ModoDetallesProducto.EDICION);
+        }
+
+        this.dispose();
     }//GEN-LAST:event_btnSeleccionarActionPerformed
 
     private void btnVolverAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverAtrasActionPerformed

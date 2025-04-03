@@ -1,7 +1,7 @@
 package pantallas;
 
 import control.ControlNavegacion;
-import control.ModoTablaProductos;
+import control.enums.ModoTablaProductos;
 
 public class PantallaMenuProducto extends javax.swing.JFrame {
 
