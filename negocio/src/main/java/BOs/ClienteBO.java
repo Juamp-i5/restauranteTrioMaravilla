@@ -41,18 +41,24 @@ public class ClienteBO implements IClienteBO {
             throw new NegocioException("Error al obtener los productos habilitados", e);
         }
     }
-    
+
     @Override
-    public List<ClienteViejoDTO> obtenerClientesFiltrados(String filtroNombre, String filtroCorreo, String filtroTelefono) throws NegocioException, ListaVaciaException  {
+    public List<ClienteViejoDTO> obtenerClientesFiltrados(String filtroNombre, String filtroCorreo, String filtroTelefono) throws NegocioException, ListaVaciaException {
         try {
-            List<Cliente>clientes = clienteDAO.obtenerClientesFiltrados(filtroNombre, filtroCorreo, filtroTelefono);
-            
-            if (filtroNombre == null) filtroNombre = "";
-            if (filtroCorreo == null) filtroCorreo = "";
-            if (filtroTelefono == null) filtroTelefono = "";
+            List<Cliente> clientes = clienteDAO.obtenerClientesFiltrados(filtroNombre, filtroCorreo, filtroTelefono);
+
+            if (filtroNombre == null) {
+                filtroNombre = "";
+            }
+            if (filtroCorreo == null) {
+                filtroCorreo = "";
+            }
+            if (filtroTelefono == null) {
+                filtroTelefono = "";
+            }
             if (clientes.isEmpty()) {
                 throw new ListaVaciaException("No hay clientes registrados");
-            }         
+            }
             return clientes.stream()
                     .map(p -> MapperCliente.toClienteViejoDTO(p))
                     .collect(Collectors.toList());
@@ -64,18 +70,27 @@ public class ClienteBO implements IClienteBO {
 
     @Override
     public void asignarComandaACliente(Long idComanda, Long idCliente) throws NegocioException {
-            if (idCliente==null) {
-                throw new NegocioException("No se encontró el cliente");
-            }
-            if (idComanda==null) {
-                throw new NegocioException("No se encontró la comanda");
-            }
+        if (idCliente == null) {
+            throw new NegocioException("No se encontró el cliente");
+        }
+        if (idComanda == null) {
+            throw new NegocioException("No se encontró la comanda");
+        }
         try {
             clienteDAO.asignarComandaACliente(idComanda, idCliente);
         } catch (PersistenciaException ex) {
             throw new NegocioException("Hubo un error al asignar la comanda al cliente");
         }
     }
-    
-    
+
+    @Override
+    public ClienteViejoDTO obtenerClienteFrecuente(Long idClienteFrecuente) throws NegocioException {
+        try {
+            Cliente cliente = clienteDAO.obtenerClienteFrecuente(idClienteFrecuente);
+            ClienteViejoDTO clienteDTO = MapperCliente.toClienteViejoDTO(cliente);
+            return clienteDTO;
+        }catch(PersistenciaException ex) {
+            throw new NegocioException("Hubo un error al buscar al cliente por ID");
+        }
+    }
 }

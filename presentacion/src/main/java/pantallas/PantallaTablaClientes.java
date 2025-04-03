@@ -57,11 +57,19 @@ public class PantallaTablaClientes extends javax.swing.JFrame {
         this.comanda = comanda;
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
         for (ClienteViejoDTO cliente : clientes) {
+            String Nombre = cliente.getNombres();
+            String ApellidoP = cliente.getApellidoP();
+            String ApellidoM = cliente.getApellidoM();
+            String NombreCompleto = Nombre + " " + ApellidoP + " " + ApellidoM;
+
+            String telefonoDesencriptado = Encriptador.desencriptarBase64(cliente.getTelefono());
+            String correoDesencriptado = Encriptador.desencriptarBase64(cliente.getCorreo());
+
             Object[] fila = {
                 cliente.getId(),
-                cliente.getNombres(),
-                cliente.getTelefono(),
-                cliente.getCorreo(),
+                NombreCompleto,
+                telefonoDesencriptado,
+                correoDesencriptado,
                 cliente.getFechaRegistro(),
                 puntosFidelidad,};
             modelo.addRow(fila);
@@ -174,10 +182,24 @@ public class PantallaTablaClientes extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Nombre", "Teléfono", "Correo", "Fecha registro", "Puntos fidelidad", "Asignar comanda"
+                "ID", "Nombre", "Teléfono", "Correo", "Fecha registro", "Puntos", "Asignar comanda"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(0).setMinWidth(30);
+            jTable1.getColumnModel().getColumn(0).setMaxWidth(30);
+            jTable1.getColumnModel().getColumn(2).setMinWidth(100);
+            jTable1.getColumnModel().getColumn(2).setMaxWidth(100);
+            jTable1.getColumnModel().getColumn(3).setMinWidth(150);
+            jTable1.getColumnModel().getColumn(3).setMaxWidth(150);
+            jTable1.getColumnModel().getColumn(4).setMinWidth(100);
+            jTable1.getColumnModel().getColumn(4).setMaxWidth(100);
+            jTable1.getColumnModel().getColumn(5).setMinWidth(60);
+            jTable1.getColumnModel().getColumn(5).setMaxWidth(60);
+            jTable1.getColumnModel().getColumn(6).setMinWidth(110);
+            jTable1.getColumnModel().getColumn(6).setMaxWidth(110);
+        }
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -190,9 +212,7 @@ public class PantallaTablaClientes extends javax.swing.JFrame {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(0, 26, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
         );
 
         btnFiltrar.setBackground(new java.awt.Color(170, 200, 100));
@@ -374,7 +394,7 @@ public class PantallaTablaClientes extends javax.swing.JFrame {
                         ClienteViejoDTO cliente = clientes.get(selectedRow);
                         int confirmacion = JOptionPane.showConfirmDialog(
                                 PantallaTablaClientes.this,
-                                "¿Deseas agregar este cliente a la comanda?",
+                                "¿Deseas asignar este cliente a la comanda?",
                                 "Confirmación",
                                 JOptionPane.YES_NO_OPTION
                         );
@@ -383,10 +403,10 @@ public class PantallaTablaClientes extends javax.swing.JFrame {
                             Long idComanda = comanda.getId();
                             try {
                                 boolean confirmar = AsignacionCliente(idComanda, idCliente);
-                                if (confirmar==true) {
-                                   JOptionPane.showMessageDialog(PantallaTablaClientes.this, "Se asignó el cliente con exito"); 
-                                }else{
-                                    JOptionPane.showMessageDialog(PantallaTablaClientes.this, "Error: No se pudo asignar al cliente", "Error", JOptionPane.ERROR_MESSAGE);
+                                if (confirmar == true) {
+                                    JOptionPane.showMessageDialog(PantallaTablaClientes.this, "Se asignó el cliente con exito");
+                                } else {
+                                    JOptionPane.showMessageDialog(PantallaTablaClientes.this, "Error: No se pudo asignar la comanda con este cliente", "Error", JOptionPane.ERROR_MESSAGE);
                                 }
                             } catch (IllegalArgumentException a) {
                                 JOptionPane.showMessageDialog(PantallaTablaClientes.this, a.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

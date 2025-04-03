@@ -62,7 +62,7 @@ public class PantallaTipoCliente extends javax.swing.JFrame {
         btnRegresar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                ControlNavegacion.mostrarPantallaMesas();
                 dispose();
             }
         });

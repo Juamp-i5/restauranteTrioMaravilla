@@ -19,22 +19,33 @@ public class Cliente {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        try{
-            ClienteNuevoDTO cliente = new ClienteNuevoDTO();
         ClienteBO clienteBO = new ClienteBO();
-        LocalDate fechaActual = LocalDate.now();
-        cliente.setNombres("Pepe");
-        cliente.setApellidoP("Perez");
-        cliente.setApellidoM("");
-        cliente.setTelefono("102938475");
-        cliente.setCorreo("Ejemplo");
-        cliente.setFechaRegistro(fechaActual);
+//        try{
+//            ClienteNuevoDTO cliente = new ClienteNuevoDTO();
+//        
+//        LocalDate fechaActual = LocalDate.now();
+//        cliente.setNombres("Pepe");
+//        cliente.setApellidoP("Perez");
+//        cliente.setApellidoM("");
+//        cliente.setTelefono("102938475");
+//        cliente.setCorreo("Ejemplo");
+//        cliente.setFechaRegistro(fechaActual);
+//        long id = 1;
+//        clienteBO.obtenerClienteFrecuente(id);
+//            System.out.println();
+//        }catch(NegocioException e){
+//           System.err.println("Error de negocio: " + e.getMessage());
+//        }
         
-        clienteBO.persistirClienteFrecuente(cliente);
-            System.out.println("Se registro correctamente el cliente");
+        try{
+           long id = 1;
+            System.out.println(clienteBO.obtenerClienteFrecuente(id));
+            System.out.println();
         }catch(NegocioException e){
            System.err.println("Error de negocio: " + e.getMessage());
         }
+            
+        
     }
     
 }

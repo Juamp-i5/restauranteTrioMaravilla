@@ -94,6 +94,11 @@ public class ClienteViejoDTO {
     public void setFechaRegistro(LocalDate fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
     }
+
+    @Override
+    public String toString() {
+        return "ClienteViejoDTO{" + "id=" + id + ", nombres=" + nombres + ", apellidoP=" + apellidoP + ", apellidoM=" + apellidoM + ", telefono=" + telefono + ", correo=" + correo + ", fechaRegistro=" + fechaRegistro + ", puntosFidelidad=" + puntosFidelidad + '}';
+    }
     
     
 }

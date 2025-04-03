@@ -9,6 +9,10 @@ import DTOs.entrada.ClienteNuevoDTO;
 import control.ControlNavegacion;
 import excepciones.NegocioException;
 import java.time.LocalDate;
+import java.util.Base64;
+import javax.crypto.Cipher;
+import static javax.crypto.Cipher.SECRET_KEY;
+import javax.crypto.spec.SecretKeySpec;
 import javax.swing.JOptionPane;
 
 /**
@@ -17,7 +21,7 @@ import javax.swing.JOptionPane;
  */
 public class PantallaRegistroCliente extends javax.swing.JFrame {
 
-    ClienteBO cliente = new ClienteBO();
+    ClienteBO clienteBO = new ClienteBO();
     ControlNavegacion control = new ControlNavegacion();
 
     /**
@@ -35,21 +39,27 @@ public class PantallaRegistroCliente extends javax.swing.JFrame {
         String ApellidoM = EspacioTextoApellidoM.getText();
         String Telefono = EspacioTextoTelefono.getText();
         String Correo = EspacioTextoCorreo.getText();
-
-        ClienteNuevoDTO clienteIngresado = new ClienteNuevoDTO();
-        clienteIngresado.setNombres(Nombres);
-        clienteIngresado.setApellidoP(ApellidoP);
-        clienteIngresado.setApellidoM(ApellidoM);
-        clienteIngresado.setTelefono(Telefono);
-        clienteIngresado.setCorreo(Correo);
-        clienteIngresado.setFechaRegistro(fechaActual);
+        String telefonoEncriptado = Encriptador.encriptarBase64(Telefono);
+        String correoEncriptado = Encriptador.encriptarBase64(Correo);
+        System.out.println("Teléfono Encriptado: " + telefonoEncriptado);
+        System.out.println("Correo Encriptado: " + correoEncriptado);
         try {
             if (Nombres.isBlank() || ApellidoP.isBlank() || Telefono.isBlank() || Correo.isBlank()) {
                 JOptionPane.showMessageDialog(this, "Error: Falta informacion requerida", "Error", JOptionPane.ERROR_MESSAGE);
-            } else {
-                cliente.persistirClienteFrecuente(clienteIngresado);
+            }else {
+                ClienteNuevoDTO clienteIngresado = new ClienteNuevoDTO();
+                clienteIngresado.setNombres(Nombres);
+                clienteIngresado.setApellidoP(ApellidoP);
+                clienteIngresado.setApellidoM(ApellidoM);
+                clienteIngresado.setTelefono(telefonoEncriptado);
+                clienteIngresado.setCorreo(correoEncriptado);
+                clienteIngresado.setFechaRegistro(fechaActual);
+                
+                clienteBO.persistirClienteFrecuente(clienteIngresado);
                 JOptionPane.showMessageDialog(this, "Cliente registrado correctamente");
             }
+            
+
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
@@ -227,7 +237,7 @@ public class PantallaRegistroCliente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        ControlNavegacion.mostrarPantallaInicioSesion();
+        ControlNavegacion.mostrarPantallaMenuOpciones();
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 

@@ -18,6 +18,7 @@ import interfaces.IMesaBO;
 import interfaces.IClienteBO;
 import interfaces.IProductoBO;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -170,7 +171,7 @@ public class ControlNavegacion {
         try {
             clientes = clienteBO.obtenerClientesFiltrados(filtroNombre, filtroCorreo, filtroTelefono);
         } catch (ListaVaciaException ex) {
-            JOptionPane.showMessageDialog(null, "No hay productos", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No hay clientes registrados", "Alerta", JOptionPane.INFORMATION_MESSAGE);
         } catch (NegocioException e) {
             JOptionPane.showMessageDialog(null, "Error desconocido, ver consola", "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
@@ -180,6 +181,5 @@ public class ControlNavegacion {
         JFrame frame = new PantallaTablaClientes(clientes,comanda);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-    }
-
+    }    
 }

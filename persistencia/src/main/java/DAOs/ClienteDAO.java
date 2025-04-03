@@ -18,7 +18,7 @@ import javax.persistence.RollbackException;
 public class ClienteDAO implements IClienteDAO {
 
     @Override
-    public ClienteFrecuente obtenerClienteFrecuente(Long idClienteFrecuente) throws PersistenciaException {
+    public Cliente obtenerClienteFrecuente(Long idClienteFrecuente) throws PersistenciaException {
         EntityManager em = Conexion.getEntityManager();
         try {
             return em.find(ClienteFrecuente.class, idClienteFrecuente);

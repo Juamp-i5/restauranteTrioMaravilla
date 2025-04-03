@@ -7,6 +7,7 @@ package interfaces;
 import DTOs.entrada.ClienteNuevoDTO;
 import DTOs.salida.ClienteViejoDTO;
 import entidades.Cliente;
+import entidades.ClienteFrecuente;
 import excepciones.ListaVaciaException;
 import excepciones.NegocioException;
 import java.util.List;
@@ -21,4 +22,6 @@ public interface IClienteBO {
     public List<ClienteViejoDTO> obtenerClientesFiltrados(String filtroNombre, String filtroCorreo, String filtroTelefono) throws NegocioException, ListaVaciaException;
     
     public void asignarComandaACliente(Long idComanda, Long idCliente) throws NegocioException;
+    
+    public ClienteViejoDTO obtenerClienteFrecuente(Long idClienteFrecuente) throws NegocioException;
 }
