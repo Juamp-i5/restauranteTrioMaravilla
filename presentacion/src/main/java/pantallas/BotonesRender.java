@@ -19,7 +19,7 @@ import javax.swing.table.TableCellRenderer;
  */
 public class BotonesRender extends JButton implements TableCellRenderer {
     public BotonesRender() {
-        setText("Agregar"); // ✅ Texto del botón
+        setText("Agregar"); 
     }
 
     @Override

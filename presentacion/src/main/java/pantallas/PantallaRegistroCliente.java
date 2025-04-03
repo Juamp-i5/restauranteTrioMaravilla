@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
  * @author pablo
  */
 public class PantallaRegistroCliente extends javax.swing.JFrame {
+
     ClienteBO cliente = new ClienteBO();
     ControlNavegacion control = new ControlNavegacion();
 
@@ -28,13 +29,13 @@ public class PantallaRegistroCliente extends javax.swing.JFrame {
 
     private void validarRegistro() {
         LocalDate fechaActual = LocalDate.now();
-              
+
         String Nombres = EspacioTextoNombre.getText();
         String ApellidoP = EspacioTextoApellidoP.getText();
         String ApellidoM = EspacioTextoApellidoM.getText();
         String Telefono = EspacioTextoTelefono.getText();
         String Correo = EspacioTextoCorreo.getText();
-        
+
         ClienteNuevoDTO clienteIngresado = new ClienteNuevoDTO();
         clienteIngresado.setNombres(Nombres);
         clienteIngresado.setApellidoP(ApellidoP);
@@ -43,8 +44,12 @@ public class PantallaRegistroCliente extends javax.swing.JFrame {
         clienteIngresado.setCorreo(Correo);
         clienteIngresado.setFechaRegistro(fechaActual);
         try {
-            cliente.persistirClienteFrecuente(clienteIngresado);
-            JOptionPane.showMessageDialog(this, "Cliente registrado correctamente");
+            if (Nombres.isBlank() || ApellidoP.isBlank() || Telefono.isBlank()|| Correo.isBlank()) {
+                JOptionPane.showMessageDialog(this, "Error, faltan datos por ingresar");
+            } else {
+                cliente.persistirClienteFrecuente(clienteIngresado);
+                JOptionPane.showMessageDialog(this, "Cliente registrado correctamente");
+            }
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
@@ -124,7 +129,7 @@ public class PantallaRegistroCliente extends javax.swing.JFrame {
         });
 
         lblSubtitulo3.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        lblSubtitulo3.setText("Apellido materno");
+        lblSubtitulo3.setText("Apellido materno(opcional)");
 
         EspacioTextoApellidoM.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
