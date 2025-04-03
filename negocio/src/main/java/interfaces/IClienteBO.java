@@ -19,4 +19,6 @@ public interface IClienteBO {
     public Cliente persistirClienteFrecuente(ClienteNuevoDTO cliente) throws NegocioException;
     
     public List<ClienteViejoDTO> obtenerClientesFiltrados(String filtroNombre, String filtroCorreo, String filtroTelefono) throws NegocioException, ListaVaciaException;
+    
+    public void asignarComandaACliente(Long idComanda, Long idCliente) throws NegocioException;
 }

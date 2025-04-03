@@ -9,6 +9,7 @@ import DTOs.entrada.ClienteNuevoDTO;
 import DTOs.salida.MostrarMesaDTO;
 import DTOs.salida.ProductoIngredientesDTO;
 import DTOs.salida.ClienteViejoDTO;
+import DTOs.salida.ComandaViejaDTO;
 import DTOs.salida.ProductoResumenDTO;
 import control.enums.ModoDetallesProducto;
 import excepciones.ListaVaciaException;
@@ -164,6 +165,8 @@ public class ControlNavegacion {
 
     public static void mostrarPantallaTablaCliente(String filtroNombre, String filtroCorreo, String filtroTelefono) {
         List<ClienteViejoDTO> clientes = new ArrayList<>();
+        ComandaViejaDTO comanda = new ComandaViejaDTO();       
+        
         try {
             clientes = clienteBO.obtenerClientesFiltrados(filtroNombre, filtroCorreo, filtroTelefono);
         } catch (ListaVaciaException ex) {
@@ -174,7 +177,7 @@ public class ControlNavegacion {
             System.exit(0);
         }
 
-        JFrame frame = new PantallaTablaClientes(clientes);
+        JFrame frame = new PantallaTablaClientes(clientes,comanda);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }

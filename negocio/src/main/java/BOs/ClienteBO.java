@@ -11,6 +11,8 @@ import excepciones.PersistenciaException;
 import interfaces.IClienteBO;
 import interfaces.IClienteDAO;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import mappers.MapperCliente;
 import mappers.MapperProducto;
@@ -59,4 +61,21 @@ public class ClienteBO implements IClienteBO {
             throw new NegocioException("Error al filtrar clientes", e);
         }
     }
+
+    @Override
+    public void asignarComandaACliente(Long idComanda, Long idCliente) throws NegocioException {
+            if (idCliente==null) {
+                throw new NegocioException("No se encontró el cliente");
+            }
+            if (idComanda==null) {
+                throw new NegocioException("No se encontró la comanda");
+            }
+        try {
+            clienteDAO.asignarComandaACliente(idComanda, idCliente);
+        } catch (PersistenciaException ex) {
+            throw new NegocioException("Hubo un error al asignar la comanda al cliente");
+        }
+    }
+    
+    
 }

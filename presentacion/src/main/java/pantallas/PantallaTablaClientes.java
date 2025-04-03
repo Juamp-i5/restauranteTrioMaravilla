@@ -1,15 +1,20 @@
 package pantallas;
 
+import BOs.ClienteBO;
 import DTOs.salida.ClienteViejoDTO;
+import DTOs.salida.ComandaViejaDTO;
 import DTOs.salida.ProductoResumenDTO;
 import control.ControlNavegacion;
 import entidades.enums.TipoProducto;
+import excepciones.NegocioException;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
@@ -30,25 +35,26 @@ import javax.swing.table.TableCellRenderer;
  */
 public class PantallaTablaClientes extends javax.swing.JFrame {
 
+    ComandaViejaDTO comanda;
     List<ClienteViejoDTO> clientes;
     private JButton button;
     private String label;
     private boolean isPushed;
     private int selectedRow;
 
+    ClienteBO clienteBO = new ClienteBO();
+
     /**
      * Creates new form PantallaTablaClientes
      *
      * @param clientes
+     * @param comanda
      */
-    public PantallaTablaClientes(List<ClienteViejoDTO> clientes) {
+    public PantallaTablaClientes(List<ClienteViejoDTO> clientes, ComandaViejaDTO comanda) {
         initComponents();
         int puntosFidelidad = 0;
-        JButton boton = new JButton();
         this.clientes = clientes;
-//        for (TipoProducto tipo : TipoProducto.values()) {
-//            cmbCategoria.addItem(tipo.toString());
-//        }
+        this.comanda = comanda;
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
         for (ClienteViejoDTO cliente : clientes) {
             Object[] fila = {
@@ -200,7 +206,7 @@ public class PantallaTablaClientes extends javax.swing.JFrame {
 
         btnSinComanda.setBackground(new java.awt.Color(170, 200, 100));
         btnSinComanda.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        btnSinComanda.setText("Continuar sin comanda");
+        btnSinComanda.setText("Continuar sin cliente");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -235,7 +241,7 @@ public class PantallaTablaClientes extends javax.swing.JFrame {
                             .addComponent(lblTitulo1)
                             .addComponent(btnVolverAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnSinComanda)))
+                        .addComponent(btnSinComanda, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -257,11 +263,12 @@ public class PantallaTablaClientes extends javax.swing.JFrame {
                     .addComponent(chkTelefono)
                     .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(chkCorreo)
-                    .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(chkCorreo)
+                        .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnFiltrar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(8, 8, 8)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(sepAbajo2, javax.swing.GroupLayout.PREFERRED_SIZE, 5, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -274,9 +281,9 @@ public class PantallaTablaClientes extends javax.swing.JFrame {
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 300, Short.MAX_VALUE)
+                    .addGap(0, 301, Short.MAX_VALUE)
                     .addComponent(sepAbajo3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 301, Short.MAX_VALUE)))
+                    .addGap(0, 302, Short.MAX_VALUE)))
         );
 
         pack();
@@ -365,7 +372,26 @@ public class PantallaTablaClientes extends javax.swing.JFrame {
                 public void actionPerformed(ActionEvent e) {
                     if (isPushed) {
                         ClienteViejoDTO cliente = clientes.get(selectedRow);
-                        JOptionPane.showMessageDialog(null, "Fila de perfil de " + cliente.getNombres());
+                        int confirmacion = JOptionPane.showConfirmDialog(
+                                PantallaTablaClientes.this,
+                                "¿Deseas agregar este cliente a la comanda?",
+                                "Confirmación",
+                                JOptionPane.YES_NO_OPTION
+                        );
+                        if (confirmacion == JOptionPane.YES_OPTION) {
+                            Long idCliente = cliente.getId();
+                            Long idComanda = comanda.getId();
+                            try {
+                                boolean confirmar = AsignacionCliente(idComanda, idCliente);
+                                if (confirmar==true) {
+                                   JOptionPane.showMessageDialog(PantallaTablaClientes.this, "Se asignó el cliente con exito"); 
+                                }else{
+                                    JOptionPane.showMessageDialog(PantallaTablaClientes.this, "Error: No se pudo asignar al cliente", "Error", JOptionPane.ERROR_MESSAGE);
+                                }
+                            } catch (IllegalArgumentException a) {
+                                JOptionPane.showMessageDialog(PantallaTablaClientes.this, a.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
                     }
                     isPushed = false;
                     fireEditingStopped();
@@ -373,12 +399,21 @@ public class PantallaTablaClientes extends javax.swing.JFrame {
             });
         }
 
+        public boolean AsignacionCliente(Long idComanda, Long idCliente) {
+            try {
+                clienteBO.asignarComandaACliente(idComanda, idCliente);
+            } catch (NegocioException ex) {
+                Logger.getLogger(PantallaTablaClientes.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return false;
+        }
+
         @Override
         public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
             label = (value == null) ? "Agregar" : value.toString();
             button.setText(label);
             isPushed = true;
-            selectedRow = row; // Guardamos la fila seleccionada
+            selectedRow = row;
             return button;
         }
 

@@ -119,12 +119,10 @@ public class ClienteDAO implements IClienteDAO {
             if (cliente == null) {
                 throw new PersistenciaException("Cliente con ID " + idCliente + " no encontrado.");
             }
-
             Comanda comanda = em.find(Comanda.class, idComanda);
             if (comanda == null) {
                 throw new PersistenciaException("Comanda con ID " + idComanda + " no encontrada.");
             }
-
             if (comanda.getCliente() != null) {
                 throw new PersistenciaException("La comanda ya está asignada a un cliente.");
             }
@@ -190,7 +188,7 @@ public class ClienteDAO implements IClienteDAO {
 //        cliente.setVisitas(totalVisitas);
 //        cliente.getTotalGastado(gastoTotal);
 //        cliente.setPuntosFidelidad(puntosFidelidad);
-//
+//        
 //        return cliente;
 //    }
 }

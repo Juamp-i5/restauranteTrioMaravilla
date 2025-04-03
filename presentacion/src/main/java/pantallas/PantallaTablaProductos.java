@@ -220,7 +220,7 @@ public class PantallaTablaProductos extends javax.swing.JFrame {
         if (this.modo == ModoTablaProductos.COMANDA) {
             ControlNavegacion.mostrarTipoCliente();
         } else if (this.modo == ModoTablaProductos.CLIENTE) {
-            //
+            ControlNavegacion.mostrarPantallaTablaCliente();
         } else if (this.modo == ModoTablaProductos.PRODUCTO) {
             ControlNavegacion.mostrarPantallaMenuProducto();
         }

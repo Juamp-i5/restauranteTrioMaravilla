@@ -44,8 +44,8 @@ public class PantallaRegistroCliente extends javax.swing.JFrame {
         clienteIngresado.setCorreo(Correo);
         clienteIngresado.setFechaRegistro(fechaActual);
         try {
-            if (Nombres.isBlank() || ApellidoP.isBlank() || Telefono.isBlank()|| Correo.isBlank()) {
-                JOptionPane.showMessageDialog(this, "Error, faltan datos por ingresar");
+            if (Nombres.isBlank() || ApellidoP.isBlank() || Telefono.isBlank() || Correo.isBlank()) {
+                JOptionPane.showMessageDialog(this, "Error: Falta informacion requerida", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
                 cliente.persistirClienteFrecuente(clienteIngresado);
                 JOptionPane.showMessageDialog(this, "Cliente registrado correctamente");
