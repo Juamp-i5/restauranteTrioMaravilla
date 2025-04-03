@@ -29,15 +29,18 @@ public class IngredienteBO implements IIngredienteBO {
         if (ingrediente == null) {
             throw new NegocioException("El ingrediente no puede ser nulo.");
         }
-        if (ingrediente.getNombre() == null || ingrediente.getNombre().trim().isEmpty()) {
-            throw new NegocioException("El nombre del ingrediente no puede estar vacío.");
+        
+        if(ingrediente.getNombre() == null || ingrediente.getNombre().trim().isEmpty()
+                || ingrediente.getUnidadMedida() == null || ingrediente.getCantidadStock()== null){
+            throw new NegocioException("Se tiene que llenar todos los campos.");
         }
-        if (ingrediente.getUnidadMedida() == null) {
-            throw new NegocioException("La unidad de medida no puede ser nula.");
+        
+        if (ingrediente.getCantidadStock() < 0) {
+            throw new NegocioException("La cantidad de stock no puede ser menor a 0.");
         }
 
         if (ingredienteDAO.comprobarExistenciaIngrediente(ingrediente.getNombre(), ingrediente.getUnidadMedida())) {
-            throw new NegocioException("Ya existe un ingrediente con le mismo nombre y unidad de medida.");
+            throw new NegocioException("Ya existe un ingrediente con el mismo nombre y unidad de medida.");
         }
 
         ingredienteDAO.persistirIngrediente(MapperIngrediente.toEntity(ingrediente));

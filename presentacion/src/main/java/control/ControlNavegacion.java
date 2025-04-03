@@ -16,6 +16,7 @@ import pantallas.PantallaMenuOpciones;
 import pantallas.PantallaRegistroCliente;
 import pantallas.PantallaTipoCliente;
 import pantallas.PantallaMenuProducto;
+import pantallas.PantallaRegistrarNuevoIngrediente;
 import pantallas.PantallaTablaProductos;
 
 public class ControlNavegacion {
@@ -100,6 +101,12 @@ public class ControlNavegacion {
         }
         JOptionPane.showMessageDialog(null, "Cliente registrado correctamente", "Registro exitoso", JOptionPane.INFORMATION_MESSAGE);
         return true;
+    }
+    
+    public static void mostrarPantallaRegistrarNuevoIngrediente() {
+        JFrame frame = new PantallaRegistrarNuevoIngrediente();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 
 }

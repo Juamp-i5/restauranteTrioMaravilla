@@ -98,7 +98,7 @@ public class PantallaMenuIngrediente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegistrarIngredienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarIngredienteActionPerformed
-
+        ControlNavegacion.mostrarPantallaRegistrarNuevoIngrediente();
         this.dispose();
     }//GEN-LAST:event_btnRegistrarIngredienteActionPerformed
 

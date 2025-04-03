@@ -1,7 +1,17 @@
 package pantallas;
 
+import BOs.IngredienteBO;
+import DTOs.entrada.IngredienteNuevoDTO;
+import DTOs.salida.UnidadMedidaDTO;
 import control.ControlNavegacion;
+import entidades.enums.UnidadMedida;
+import excepciones.NegocioException;
+import excepciones.PersistenciaException;
+import interfaces.IIngredienteBO;
 import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  *
@@ -9,10 +19,98 @@ import java.util.List;
  */
 public class PantallaRegistrarNuevoIngrediente extends javax.swing.JFrame {
 
+    IIngredienteBO ingredienteBO = new IngredienteBO();
+    IngredienteNuevoDTO ingredienteNuevo;
+
     public PantallaRegistrarNuevoIngrediente() {
         initComponents();
+        cargarUnidadesDeMedida();
+        listenerVerificarCampos();
+
     }
 
+    private void cargarUnidadesDeMedida() {
+        List<UnidadMedidaDTO> unidades = ingredienteBO.obtenerUnidadesMedida();
+        comboBoxUnidadMedida.removeAllItems();
+
+        for (UnidadMedidaDTO unidad : unidades) {
+            comboBoxUnidadMedida.addItem(unidad.getNombre());
+        }
+    }
+
+    private void registrarInformacionIngrediente() {
+        String nombreIngrediente = txtNombreIngrediente.getText();
+        String cantidadStock = jTextField2.getText();
+        String unidadMedidaStr = (String) comboBoxUnidadMedida.getSelectedItem();
+
+        UnidadMedida unidadMedida = UnidadMedida.valueOf(unidadMedidaStr.toUpperCase());
+
+        ingredienteNuevo = new IngredienteNuevoDTO();
+        ingredienteNuevo.setNombre(nombreIngrediente);
+        ingredienteNuevo.setUnidadMedida(unidadMedida);
+        ingredienteNuevo.setCantidadStock(Integer.parseInt(cantidadStock));
+
+        registrarNuevoIngrediente();
+    }
+
+    public void registrarNuevoIngrediente() {
+        try {
+            ingredienteBO.registrarNuevoIngrediente(ingredienteNuevo);
+            JOptionPane.showMessageDialog(this, "Ingrediente registrado exitosamente.");
+        } catch (NegocioException | PersistenciaException e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void listenerVerificarCampos() {
+        txtNombreIngrediente.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                verificarCampos();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                verificarCampos();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                verificarCampos();
+            }
+        });
+
+        jTextField2.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                verificarCampos();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                verificarCampos();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                verificarCampos();
+            }
+        });
+
+        comboBoxUnidadMedida.addActionListener(e -> verificarCampos());
+    }
+
+    private void verificarCampos() {
+        String nombreIngrediente = txtNombreIngrediente.getText().trim();
+        String cantidadStock = jTextField2.getText().trim();
+        String unidadMedidaStr = (String) comboBoxUnidadMedida.getSelectedItem();
+
+        if (!nombreIngrediente.isEmpty() && !cantidadStock.isEmpty() && !unidadMedidaStr.isEmpty()) {
+            btnGuardarIngrediente.setEnabled(true);
+        } else {
+            btnGuardarIngrediente.setEnabled(false);
+        }
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -25,8 +123,8 @@ public class PantallaRegistrarNuevoIngrediente extends javax.swing.JFrame {
         javax.swing.JButton btnVolverAtras = new javax.swing.JButton();
         lblNombreIngrediente = new javax.swing.JLabel();
         txtNombreIngrediente = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        lblUnidadMedida = new javax.swing.JLabel();
+        comboBoxUnidadMedida = new javax.swing.JComboBox<>();
         lblCantidadDeStock = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         btnGuardarIngrediente = new javax.swing.JButton();
@@ -34,7 +132,6 @@ public class PantallaRegistrarNuevoIngrediente extends javax.swing.JFrame {
         jTextField1.setText("jTextField1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(803, 599));
 
         lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         lblTitulo.setText("Registrar nuevo ingrediente");
@@ -53,26 +150,16 @@ public class PantallaRegistrarNuevoIngrediente extends javax.swing.JFrame {
 
         txtNombreIngrediente.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel1.setText("Unidad de medida");
+        lblUnidadMedida.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblUnidadMedida.setText("Unidad de medida");
 
-        jComboBox1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
-            }
-        });
+        comboBoxUnidadMedida.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        comboBoxUnidadMedida.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         lblCantidadDeStock.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblCantidadDeStock.setText("Cantidad de stock");
 
         jTextField2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
-            }
-        });
 
         btnGuardarIngrediente.setBackground(new java.awt.Color(0, 131, 125));
         btnGuardarIngrediente.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -92,9 +179,9 @@ public class PantallaRegistrarNuevoIngrediente extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lblNombreIngrediente)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel1)
+                        .addComponent(lblUnidadMedida)
                         .addComponent(txtNombreIngrediente, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(comboBoxUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lblCantidadDeStock, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(328, Short.MAX_VALUE))
@@ -120,9 +207,9 @@ public class PantallaRegistrarNuevoIngrediente extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(txtNombreIngrediente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
-                .addComponent(jLabel1)
+                .addComponent(lblUnidadMedida)
                 .addGap(18, 18, 18)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(comboBoxUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(45, 45, 45)
                 .addComponent(lblCantidadDeStock)
                 .addGap(18, 18, 18)
@@ -147,32 +234,25 @@ public class PantallaRegistrarNuevoIngrediente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVolverAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverAtrasActionPerformed
-        ControlNavegacion.mostrarPantallaMenuOpciones();
-
+        ControlNavegacion.mostrarPantallaMenuIngrediente();
         this.dispose();
     }//GEN-LAST:event_btnVolverAtrasActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
-
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
-
     private void btnGuardarIngredienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarIngredienteActionPerformed
-
+        registrarInformacionIngrediente();
+        ControlNavegacion.mostrarPantallaMenuIngrediente();
+        this.dispose();
     }//GEN-LAST:event_btnGuardarIngredienteActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardarIngrediente;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JComboBox<String> comboBoxUnidadMedida;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JLabel lblCantidadDeStock;
     private javax.swing.JLabel lblNombreIngrediente;
     private javax.swing.JLabel lblTitulo;
+    private javax.swing.JLabel lblUnidadMedida;
     private javax.swing.JSeparator sepAbajo;
     private javax.swing.JSeparator sepArriba;
     private javax.swing.JTextField txtNombreIngrediente;
