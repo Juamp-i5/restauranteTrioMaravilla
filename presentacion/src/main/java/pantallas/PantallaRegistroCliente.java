@@ -45,7 +45,6 @@ public class PantallaRegistroCliente extends javax.swing.JFrame {
         try {
             cliente.persistirClienteFrecuente(clienteIngresado);
             JOptionPane.showMessageDialog(this, "Cliente registrado correctamente");
-            dispose();
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {

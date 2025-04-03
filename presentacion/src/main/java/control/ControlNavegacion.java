@@ -1,10 +1,13 @@
 package control;
 
+import BOs.ClienteBO;
 import BOs.ProductoBO;
 import DTOs.entrada.ClienteNuevoDTO;
+import DTOs.salida.ClienteViejoDTO;
 import DTOs.salida.ProductoResumenDTO;
 import excepciones.ListaVaciaException;
 import excepciones.NegocioException;
+import interfaces.IClienteBO;
 import interfaces.IProductoBO;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +20,7 @@ import pantallas.PantallaRegistroCliente;
 import pantallas.PantallaTipoCliente;
 import pantallas.PantallaMenuProducto;
 import pantallas.PantallaRegistrarNuevoIngrediente;
+import pantallas.PantallaTablaClientes;
 import pantallas.PantallaTablaProductos;
 
 public class ControlNavegacion {
@@ -24,6 +28,7 @@ public class ControlNavegacion {
     private static ModoMenu modoMenu;
 
     private static IProductoBO productoBO = new ProductoBO();
+    private static IClienteBO clienteBO = new ClienteBO();
 
     public static void mostrarPantallaInicioSesion() {
         JFrame frame = new PantallaInicioSesion();
@@ -105,6 +110,27 @@ public class ControlNavegacion {
     
     public static void mostrarPantallaRegistrarNuevoIngrediente() {
         JFrame frame = new PantallaRegistrarNuevoIngrediente();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+    
+    public static void mostrarPantallaTablaCliente(){
+        mostrarPantallaTablaCliente("","","");
+    }
+    
+    public static void mostrarPantallaTablaCliente(String filtroNombre, String filtroCorreo, String filtroTelefono) {
+        List<ClienteViejoDTO> clientes = new ArrayList<>();
+        try {
+            clientes = clienteBO.obtenerClientesFiltrados(filtroNombre, filtroCorreo, filtroTelefono);
+        } catch (ListaVaciaException ex) {
+            JOptionPane.showMessageDialog(null, "No hay productos", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+        } catch (NegocioException e) {
+            JOptionPane.showMessageDialog(null, "Error desconocido, ver consola", "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+            System.exit(0);
+        }
+        
+        JFrame frame = new PantallaTablaClientes(clientes);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }

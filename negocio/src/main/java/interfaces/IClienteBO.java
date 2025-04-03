@@ -5,8 +5,11 @@
 package interfaces;
 
 import DTOs.entrada.ClienteNuevoDTO;
+import DTOs.salida.ClienteViejoDTO;
 import entidades.Cliente;
+import excepciones.ListaVaciaException;
 import excepciones.NegocioException;
+import java.util.List;
 
 /**
  *
@@ -14,4 +17,6 @@ import excepciones.NegocioException;
  */
 public interface IClienteBO {
     public Cliente persistirClienteFrecuente(ClienteNuevoDTO cliente) throws NegocioException;
+    
+    public List<ClienteViejoDTO> obtenerClientesFiltrados(String filtroNombre, String filtroCorreo, String filtroTelefono) throws NegocioException, ListaVaciaException;
 }

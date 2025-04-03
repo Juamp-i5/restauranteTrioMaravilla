@@ -8,6 +8,7 @@ import excepciones.PersistenciaException;
 import interfaces.IClienteDAO;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.RollbackException;
 
 /**
@@ -139,6 +140,41 @@ public class ClienteDAO implements IClienteDAO {
         }
     }
 
+    @Override
+    public List<Cliente> obtenerClientesFiltrados(String filtroNombre, String filtroCorreo, String filtroTelefono) throws PersistenciaException {
+        EntityManager em = Conexion.getEntityManager();
+        try {
+            String queryString = "SELECT c FROM ClienteFrecuente c WHERE 1=1"; // Base de consulta dinámica
+
+            if (!filtroNombre.isEmpty()) {
+                queryString += " AND c.nombres LIKE :nombre";
+            }
+            if (!filtroCorreo.isEmpty()) {
+                queryString += " AND c.correoElectronico LIKE :correo";
+            }
+            if (!filtroTelefono.isEmpty()) {
+                queryString += " AND c.telefono LIKE :telefono";
+            }
+            Query query = em.createQuery(queryString, Cliente.class);
+            if (!filtroNombre.isEmpty()) {
+                query.setParameter("nombre", "%" + filtroNombre + "%");
+            }
+            if (!filtroCorreo.isEmpty()) {
+                query.setParameter("correo", "%" + filtroCorreo + "%");
+            }
+            if (!filtroTelefono.isEmpty()) {
+                query.setParameter("telefono", "%" + filtroTelefono + "%");
+            }
+            return query.getResultList();
+        } catch (Exception e) {
+            throw new PersistenciaException("Error al obtener clientes filtrados", e);
+        } finally {
+            if (em != null && em.isOpen()) {
+                em.close();
+            }
+        }
+    }
+    
 //    @Override
 //    public ClienteFrecuente calcularHistorialCliente(Long idCliente) throws PersistenciaException {
 //        ClienteFrecuente cliente = obtenerClienteFrecuente(idCliente);

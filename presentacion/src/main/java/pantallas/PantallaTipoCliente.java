@@ -78,7 +78,7 @@ public class PantallaTipoCliente extends javax.swing.JFrame {
         BTN_CLIENTE_FRECUENTE.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                ControlNavegacion.mostrarPantallaTablaCliente();
                 dispose();
             }
         });

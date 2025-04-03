@@ -24,5 +24,7 @@ public interface IClienteDAO {
     
     public void asignarComandaACliente(Long idComanda, Long idCliente) throws PersistenciaException;
     
+    public List<Cliente> obtenerClientesFiltrados(String filtroNombre, String filtroCorreo, String filtroTelefono) throws PersistenciaException;
+    
 //    public ClienteFrecuente calcularHistorialCliente(Long idCliente) throws PersistenciaException;
 }
