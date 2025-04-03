@@ -39,10 +39,15 @@ public class PantallaRegistrarNuevoIngrediente extends javax.swing.JFrame {
     }
 
     private void registrarInformacionIngrediente() {
-        String nombreIngrediente = txtNombreIngrediente.getText();
+        String nombreIngrediente = txtNombreIngrediente.getText().trim().toLowerCase();
         String cantidadStock = jTextField2.getText();
         String unidadMedidaStr = (String) comboBoxUnidadMedida.getSelectedItem();
 
+        if (!cantidadStock.matches("\\d+")) {
+            JOptionPane.showMessageDialog(this, "Error: La cantidad de stock debe ser un número entero.", "Error", JOptionPane.ERROR_MESSAGE);
+            return; 
+        }
+        
         UnidadMedida unidadMedida = UnidadMedida.valueOf(unidadMedidaStr.toUpperCase());
 
         ingredienteNuevo = new IngredienteNuevoDTO();
@@ -57,6 +62,9 @@ public class PantallaRegistrarNuevoIngrediente extends javax.swing.JFrame {
         try {
             ingredienteBO.registrarNuevoIngrediente(ingredienteNuevo);
             JOptionPane.showMessageDialog(this, "Ingrediente registrado exitosamente.");
+
+            ControlNavegacion.mostrarPantallaMenuIngrediente();
+            this.dispose();
         } catch (NegocioException | PersistenciaException e) {
             JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -240,8 +248,6 @@ public class PantallaRegistrarNuevoIngrediente extends javax.swing.JFrame {
 
     private void btnGuardarIngredienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarIngredienteActionPerformed
         registrarInformacionIngrediente();
-        ControlNavegacion.mostrarPantallaMenuIngrediente();
-        this.dispose();
     }//GEN-LAST:event_btnGuardarIngredienteActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
