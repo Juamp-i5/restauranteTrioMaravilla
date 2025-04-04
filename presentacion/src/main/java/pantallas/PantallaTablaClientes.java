@@ -5,6 +5,7 @@ import DTOs.salida.ClienteViejoDTO;
 import DTOs.salida.ComandaViejaDTO;
 import DTOs.salida.ProductoResumenDTO;
 import control.ControlNavegacion;
+import control.enums.ModoTablaProductos;
 import enums.TipoProducto;
 import excepciones.NegocioException;
 import java.awt.BorderLayout;
@@ -227,6 +228,11 @@ public class PantallaTablaClientes extends javax.swing.JFrame {
         btnSinComanda.setBackground(new java.awt.Color(170, 200, 100));
         btnSinComanda.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnSinComanda.setText("Continuar sin cliente");
+        btnSinComanda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSinComandaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -348,6 +354,11 @@ public class PantallaTablaClientes extends javax.swing.JFrame {
         ControlNavegacion.mostrarPantallaTablaCliente(filtroClienteNombre, filtroClienteCorreo, filtroClienteTelefono);
         this.dispose();
     }//GEN-LAST:event_btnFiltrarActionPerformed
+
+    private void btnSinComandaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSinComandaActionPerformed
+        ControlNavegacion.mostrarPantallaTablaProductos(ModoTablaProductos.CLIENTE);
+        this.dispose();
+    }//GEN-LAST:event_btnSinComandaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFiltrar;

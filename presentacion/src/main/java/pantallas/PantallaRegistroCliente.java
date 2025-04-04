@@ -1,18 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package pantallas;
 
 import BOs.ClienteBO;
 import DTOs.entrada.ClienteNuevoDTO;
 import control.ControlNavegacion;
-import excepciones.NegocioException;
 import java.time.LocalDate;
-import java.util.Base64;
-import javax.crypto.Cipher;
-import static javax.crypto.Cipher.SECRET_KEY;
-import javax.crypto.spec.SecretKeySpec;
 import javax.swing.JOptionPane;
 
 /**
@@ -41,8 +32,7 @@ public class PantallaRegistroCliente extends javax.swing.JFrame {
         String Correo = EspacioTextoCorreo.getText();
         String telefonoEncriptado = Encriptador.encriptarBase64(Telefono);
         String correoEncriptado = Encriptador.encriptarBase64(Correo);
-        System.out.println("Teléfono Encriptado: " + telefonoEncriptado);
-        System.out.println("Correo Encriptado: " + correoEncriptado);
+
         try {
             if (Nombres.isBlank() || ApellidoP.isBlank() || Telefono.isBlank() || Correo.isBlank()) {
                 JOptionPane.showMessageDialog(this, "Error: Falta informacion requerida", "Error", JOptionPane.ERROR_MESSAGE);
@@ -59,7 +49,6 @@ public class PantallaRegistroCliente extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Cliente registrado correctamente");
             }
             
-
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
@@ -111,7 +100,7 @@ public class PantallaRegistroCliente extends javax.swing.JFrame {
             }
         });
 
-        btnConfirmarRegistro.setBackground(new java.awt.Color(0, 131, 125));
+        btnConfirmarRegistro.setBackground(new java.awt.Color(170, 200, 100));
         btnConfirmarRegistro.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnConfirmarRegistro.setText("Confirmar registro");
         btnConfirmarRegistro.addActionListener(new java.awt.event.ActionListener() {
