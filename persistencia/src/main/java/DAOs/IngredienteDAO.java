@@ -139,9 +139,13 @@ public class IngredienteDAO implements IIngredienteDAO {
             em.getTransaction().begin();
             Ingrediente ingrediente = em.find(Ingrediente.class, idIngrediente);
             if (ingrediente != null) {
-                ingrediente.setCantidadStock(ingrediente.getCantidadStock() - cantidad);
-                em.getTransaction().commit();
-                return true;
+                if (ingrediente.getCantidadStock() >= cantidad) {
+                    ingrediente.setCantidadStock(ingrediente.getCantidadStock() - cantidad);
+                    em.getTransaction().commit();
+                    return true;
+                } else {
+                    throw new PersistenciaException("El stock no puede ser menor a 0.");
+                }
             }
             return false;
         } catch (Exception e) {
@@ -211,7 +215,5 @@ public class IngredienteDAO implements IIngredienteDAO {
             }
         }
     }
-    
-    
 
 }
