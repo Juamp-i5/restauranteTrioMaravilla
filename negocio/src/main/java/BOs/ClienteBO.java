@@ -43,10 +43,8 @@ public class ClienteBO implements IClienteBO {
     }
 
     @Override
-    public List<ClienteViejoDTO> obtenerClientesFiltrados(String filtroNombre, String filtroCorreo, String filtroTelefono) throws NegocioException, ListaVaciaException {
+    public List<ClienteViejoDTO> obtenerClientesFiltrados(String filtroNombre, String filtroCorreo, String filtroTelefono) throws NegocioException {
         try {
-            List<Cliente> clientes = clienteDAO.obtenerClientesFiltrados(filtroNombre, filtroCorreo, filtroTelefono);
-
             if (filtroNombre == null) {
                 filtroNombre = "";
             }
@@ -56,11 +54,11 @@ public class ClienteBO implements IClienteBO {
             if (filtroTelefono == null) {
                 filtroTelefono = "";
             }
-            if (clientes.isEmpty()) {
-                throw new ListaVaciaException("No hay clientes registrados");
-            }
+
+            List<Cliente> clientes = clienteDAO.obtenerClientesFiltrados(filtroNombre, filtroCorreo, filtroTelefono);
+
             return clientes.stream()
-                    .map(p -> MapperCliente.toClienteViejoDTO(p))
+                    .map(MapperCliente::toClienteViejoDTO)
                     .collect(Collectors.toList());
 
         } catch (PersistenciaException e) {
@@ -89,7 +87,7 @@ public class ClienteBO implements IClienteBO {
             Cliente cliente = clienteDAO.obtenerClienteFrecuente(idClienteFrecuente);
             ClienteViejoDTO clienteDTO = MapperCliente.toClienteViejoDTO(cliente);
             return clienteDTO;
-        }catch(PersistenciaException ex) {
+        } catch (PersistenciaException ex) {
             throw new NegocioException("Hubo un error al buscar al cliente por ID");
         }
     }

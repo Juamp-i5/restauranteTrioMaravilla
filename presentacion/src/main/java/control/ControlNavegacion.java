@@ -17,16 +17,12 @@ import control.enums.ModoDetallesProducto;
 import control.enums.ModoTablaIngredientes;
 import excepciones.ListaVaciaException;
 import excepciones.NegocioException;
-import excepciones.PersistenciaException;
 import interfaces.IMesaBO;
 import interfaces.IClienteBO;
 import interfaces.IIngredienteBO;
 import interfaces.IProductoBO;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import pantallas.PantallaDetallesProducto;
@@ -140,7 +136,7 @@ public class ControlNavegacion {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-    
+
     public static void mostrarPantallaMenuReporte() {
         JFrame frame = new PantallaMenuReporte();
         frame.setLocationRelativeTo(null);
@@ -173,14 +169,15 @@ public class ControlNavegacion {
 
         try {
             clientes = clienteBO.obtenerClientesFiltrados(filtroNombre, filtroCorreo, filtroTelefono);
-        } catch (ListaVaciaException ex) {
-            JOptionPane.showMessageDialog(null, "No hay clientes registrados", "Alerta", JOptionPane.INFORMATION_MESSAGE);
-        } catch (NegocioException e) {
-            JOptionPane.showMessageDialog(null, "Error desconocido, ver consola", "Error", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-            System.exit(0);
-        }
+            if (clientes == null || clientes.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "No hay clientes con los filtros seleccionados", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+            }
 
+        } catch (NegocioException ex) {
+            JOptionPane.showMessageDialog(null, "Ocurrió un error al obtener los clientes. Verifica los filtros o revisa la consola.", "Error", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+        }
+        
         JFrame frame = new PantallaTablaClientes(clientes, comanda);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
@@ -199,7 +196,7 @@ public class ControlNavegacion {
         }
         return null;
     }
-    
+
     public static List<IngredienteViejoDTO> obtenerIngredientes(String filtroNombre, String filtroUnidadMedida) {
         List<IngredienteViejoDTO> ingredientes = new ArrayList<>();
         try {
@@ -213,20 +210,15 @@ public class ControlNavegacion {
         }
         return null;
     }
-    
+
     public static void mostrarPantallaTablaIngredientes(ModoTablaIngredientes modo) {
         mostrarPantallaTablaIngredientes("", "", modo);
     }
-    
+
     public static void mostrarPantallaTablaIngredientes(String filtroNombre, String filtroUnidadMedida, ModoTablaIngredientes modo) {
         JFrame frame = new PantallaTablaIngredientes(null, modo);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-    
-    
-    
-    
-    
-    
+
 }
