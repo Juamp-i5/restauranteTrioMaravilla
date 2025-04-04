@@ -19,8 +19,6 @@ public interface IIngredienteDAO {
 
     public boolean eliminarIngrediente(Long idIngrediente) throws PersistenciaException;
 
-    public Ingrediente obtenerIngredientePorId(Long idIngrediente) throws PersistenciaException;
-
     public List<Ingrediente> obtenerIngredientes() throws PersistenciaException;
 
     public List<Ingrediente> obtenerIngredientesDisponibles() throws PersistenciaException;

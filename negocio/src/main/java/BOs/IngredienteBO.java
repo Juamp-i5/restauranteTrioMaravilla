@@ -6,12 +6,15 @@ import DTOs.salida.IngredienteViejoDTO;
 import DTOs.salida.UnidadMedidaDTO;
 import entidades.Ingrediente;
 import enums.UnidadMedida;
+import excepciones.ListaVaciaException;
 import excepciones.NegocioException;
 import excepciones.PersistenciaException;
 import interfaces.IIngredienteBO;
 import interfaces.IIngredienteDAO;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import mappers.MapperIngrediente;
 
@@ -29,12 +32,12 @@ public class IngredienteBO implements IIngredienteBO {
         if (ingrediente == null) {
             throw new NegocioException("El ingrediente no puede ser nulo.");
         }
-        
-        if(ingrediente.getNombre() == null || ingrediente.getNombre().trim().isEmpty()
-                || ingrediente.getUnidadMedida() == null || ingrediente.getCantidadStock()== null){
+
+        if (ingrediente.getNombre() == null || ingrediente.getNombre().trim().isEmpty()
+                || ingrediente.getUnidadMedida() == null || ingrediente.getCantidadStock() == null) {
             throw new NegocioException("Se tiene que llenar todos los campos.");
         }
-        
+
         if (ingrediente.getCantidadStock() < 0) {
             throw new NegocioException("La cantidad de stock no puede ser menor a 0.");
         }
@@ -64,18 +67,6 @@ public class IngredienteBO implements IIngredienteBO {
             throw new NegocioException("No se pudo eliminar el ingrediente con ID: " + idIngrediente);
         }
         return eliminado;
-    }
-
-    @Override
-    public IngredienteViejoDTO obtenerIngredientePorId(Long idIngrediente) throws PersistenciaException, NegocioException {
-        if (idIngrediente <= 0) {
-            throw new NegocioException("El ID debe ser un número válido.");
-        }
-        Ingrediente ingrediente = ingredienteDAO.obtenerIngredientePorId(idIngrediente);
-        if (ingrediente == null) {
-            throw new NegocioException("Ingrediente no encontrado con ID: " + idIngrediente);
-        }
-        return MapperIngrediente.toViejoDTO(ingrediente);
     }
 
     @Override
@@ -153,17 +144,24 @@ public class IngredienteBO implements IIngredienteBO {
     }
 
     @Override
-    public List<IngredienteViejoDTO> obtenerIngredientesFiltrados(String filtroNombre, String filtroUnidad) throws PersistenciaException {
+    public List<IngredienteViejoDTO> obtenerIngredientesFiltrados(String filtroNombre, String filtroUnidad) throws NegocioException, ListaVaciaException {
+        try {
+            if (filtroNombre == null) {
+                filtroNombre = "";
+            }
+            if (filtroUnidad == null) {
+                filtroUnidad = "";
+            }
 
-        if (filtroNombre == null) {
-            filtroNombre = ""; 
-        }
-        if (filtroUnidad == null) {
-            filtroUnidad = ""; 
-        }
+            List<Ingrediente> ingredientesFiltrados = ingredienteDAO.obtenerIngredientesFiltrados(filtroNombre, filtroUnidad);
+            if (ingredientesFiltrados.isEmpty()) {
+                throw new ListaVaciaException("No hay productos habilitados");
+            }
 
-        List<Ingrediente> ingredientesFiltrados = ingredienteDAO.obtenerIngredientesFiltrados(filtroNombre, filtroUnidad);
-        return MapperIngrediente.toViejoDTOList(ingredientesFiltrados);
+            return MapperIngrediente.toViejoDTOList(ingredientesFiltrados);
+        } catch (PersistenciaException e) {
+            throw new NegocioException("Error al obtener los productos habilitados", e);
+        }
     }
 
 }

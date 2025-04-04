@@ -4,18 +4,23 @@ import BOs.MesaBO;
 import control.enums.ModoMenu;
 import control.enums.ModoTablaProductos;
 import BOs.ClienteBO;
+import BOs.IngredienteBO;
 import BOs.ProductoBO;
 import DTOs.entrada.ClienteNuevoDTO;
 import DTOs.salida.MostrarMesaDTO;
 import DTOs.salida.ProductoIngredientesDTO;
 import DTOs.salida.ClienteViejoDTO;
 import DTOs.salida.ComandaViejaDTO;
+import DTOs.salida.IngredienteViejoDTO;
 import DTOs.salida.ProductoResumenDTO;
 import control.enums.ModoDetallesProducto;
+import control.enums.ModoTablaIngredientes;
 import excepciones.ListaVaciaException;
 import excepciones.NegocioException;
+import excepciones.PersistenciaException;
 import interfaces.IMesaBO;
 import interfaces.IClienteBO;
+import interfaces.IIngredienteBO;
 import interfaces.IProductoBO;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -34,6 +39,7 @@ import pantallas.PantallaMenuProducto;
 import pantallas.PantallaMesas;
 import pantallas.PantallaRegistrarNuevoIngrediente;
 import pantallas.PantallaTablaClientes;
+import pantallas.PantallaTablaIngredientes;
 import pantallas.PantallaTablaProductos;
 
 public class ControlNavegacion {
@@ -43,6 +49,7 @@ public class ControlNavegacion {
     private static IProductoBO productoBO = new ProductoBO();
     private static IMesaBO mesaBO = new MesaBO();
     private static IClienteBO clienteBO = new ClienteBO();
+    private static IIngredienteBO ingredienteBO = new IngredienteBO();
 
     public static void mostrarPantallaInicioSesion() {
         JFrame frame = new PantallaInicioSesion();
@@ -185,4 +192,34 @@ public class ControlNavegacion {
         }
         return null;
     }
+    
+    public static List<IngredienteViejoDTO> obtenerIngredientes(String filtroNombre, String filtroUnidadMedida) {
+        List<IngredienteViejoDTO> ingredientes = new ArrayList<>();
+        try {
+            ingredientes = ingredienteBO.obtenerIngredientesFiltrados(filtroNombre, filtroUnidadMedida);
+            return ingredientes;
+        } catch (ListaVaciaException ex) {
+        } catch (NegocioException e) {
+            JOptionPane.showMessageDialog(null, "Error desconocido, ver consola", "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+            System.exit(0);
+        }
+        return null;
+    }
+    
+    public static void mostrarPantallaTablaIngredientes(ModoTablaIngredientes modo) {
+        mostrarPantallaTablaIngredientes("", "", modo);
+    }
+    
+    public static void mostrarPantallaTablaIngredientes(String filtroNombre, String filtroUnidadMedida, ModoTablaIngredientes modo) {
+        JFrame frame = new PantallaTablaIngredientes(null, modo);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+    
+    
+    
+    
+    
+    
 }

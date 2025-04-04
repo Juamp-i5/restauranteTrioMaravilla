@@ -8,6 +8,7 @@ import DTOs.entrada.IngredienteNuevoDTO;
 import DTOs.salida.IngredienteViejoDTO;
 import DTOs.salida.UnidadMedidaDTO;
 import enums.UnidadMedida;
+import excepciones.ListaVaciaException;
 import excepciones.NegocioException;
 import excepciones.PersistenciaException;
 import java.util.List;
@@ -24,8 +25,6 @@ public interface IIngredienteBO {
 
     public boolean eliminarIngrediente(Long idIngrediente) throws PersistenciaException, NegocioException;
 
-    public IngredienteViejoDTO obtenerIngredientePorId(Long idIngrediente) throws PersistenciaException, NegocioException;
-
     public List<IngredienteViejoDTO> obtenerIngredientes() throws PersistenciaException, NegocioException;
 
     public List<IngredienteViejoDTO> obtenerIngredientesDisponibles() throws PersistenciaException, NegocioException;
@@ -34,7 +33,7 @@ public interface IIngredienteBO {
 
     public boolean reducirStock(Long idIngrediente, Integer cantidad) throws PersistenciaException, NegocioException;
 
-    public List<IngredienteViejoDTO> obtenerIngredientesFiltrados(String filtroNombre, String filtroUnidad) throws PersistenciaException;
+    public List<IngredienteViejoDTO> obtenerIngredientesFiltrados(String filtroNombre, String filtroUnidad) throws NegocioException, ListaVaciaException;
 
   
 

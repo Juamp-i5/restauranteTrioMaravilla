@@ -65,20 +65,6 @@ public class IngredienteDAO implements IIngredienteDAO {
     }
 
     @Override
-    public Ingrediente obtenerIngredientePorId(Long idIngrediente) throws PersistenciaException {
-        EntityManager em = Conexion.getEntityManager();
-        try {
-            return em.find(Ingrediente.class, idIngrediente);
-        } catch (Exception e) {
-            throw new PersistenciaException("Error al obtener ingrediente", e);
-        } finally {
-            if (em != null && em.isOpen()) {
-                em.close();
-            }
-        }
-    }
-
-    @Override
     public List<Ingrediente> obtenerIngredientes() throws PersistenciaException {
         EntityManager em = Conexion.getEntityManager();
         try {
@@ -92,7 +78,7 @@ public class IngredienteDAO implements IIngredienteDAO {
         }
 
     }
-
+    
     @Override
     public List<Ingrediente> obtenerIngredientesDisponibles() throws PersistenciaException {
         EntityManager em = Conexion.getEntityManager();

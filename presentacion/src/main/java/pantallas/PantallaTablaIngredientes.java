@@ -2,14 +2,17 @@ package pantallas;
 
 import BOs.IngredienteBO;
 import DTOs.salida.IngredienteViejoDTO;
+import control.ControlNavegacion;
 import control.enums.ModoTablaIngredientes;
-import entidades.enums.UnidadMedida;
+import enums.UnidadMedida;
 import excepciones.NegocioException;
 import excepciones.PersistenciaException;
 import interfaces.IIngredienteBO;
 import java.util.List;
+import java.util.Optional;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -20,14 +23,18 @@ public class PantallaTablaIngredientes extends javax.swing.JFrame {
 
     IIngredienteBO ingredienteBO = new IngredienteBO();
     List<IngredienteViejoDTO> ingredientes;
-    
+
     ModoTablaIngredientes modo;
     DefaultTableModel modelo;
+    private Timer timer;
+    private static final int TIPO_DEBOUNCE = 50;
 
     public PantallaTablaIngredientes(List<IngredienteViejoDTO> ingredientes, ModoTablaIngredientes modo) {
         initComponents();
+        if (modo == ModoTablaIngredientes.INGREDIENTE) {
+            btnSeleccionar.setVisible(false);
+        }
 
-        this.ingredientes = ingredientes;
         this.modo = modo;
 
         comboBoxUnidadMedida.removeAllItems();
@@ -35,10 +42,16 @@ public class PantallaTablaIngredientes extends javax.swing.JFrame {
             comboBoxUnidadMedida.addItem(tipo.toString());
         }
 
+        cargarIngredientesTabla();
+    }
+
+    private void cargarIngredientesTabla() {
+        actualizarIngredientesFiltrados();
+
         modelo = (DefaultTableModel) tablaIngredientes.getModel();
+        modelo.setRowCount(0);
 
         if (modo == ModoTablaIngredientes.PRODUCTO) {
-            // Si el modo es producto, muestra solo las filas de id, nombre, unidad de medida y cantidad
             for (IngredienteViejoDTO ingrediente : ingredientes) {
                 Object[] fila = {
                     ingrediente.getId(),
@@ -49,7 +62,6 @@ public class PantallaTablaIngredientes extends javax.swing.JFrame {
                 modelo.addRow(fila);
             }
         } else if (modo == ModoTablaIngredientes.INGREDIENTE) {
-            // Si el modo es ingrediente, muestra los botones en la tabla
             for (IngredienteViejoDTO ingrediente : ingredientes) {
                 Object[] fila = {
                     ingrediente.getId(),
@@ -63,6 +75,13 @@ public class PantallaTablaIngredientes extends javax.swing.JFrame {
                 modelo.addRow(fila);
             }
         }
+    }
+
+    private void actualizarIngredientesFiltrados() {
+        String filtroNombre = chkNombreIngrediente.isSelected() ? txtNombreIngrediente.getText().strip() : "";
+        String filtroUnidadMedida = chkUnidadMedida.isSelected() ? comboBoxUnidadMedida.getSelectedItem().toString().strip() : "";
+
+        this.ingredientes = ControlNavegacion.obtenerIngredientes(filtroNombre, filtroUnidadMedida);
     }
 
     private JButton crearBoton(String nombre, IngredienteViejoDTO ingrediente) {
@@ -82,11 +101,11 @@ public class PantallaTablaIngredientes extends javax.swing.JFrame {
         });
         return boton;
     }
-    
+
     private void restarStock(IngredienteViejoDTO ingrediente) {
         try {
             if (ingrediente.getCantidadStock() > 0) {
-                boolean resultado = ingredienteBO.reducirStock(ingrediente.getId(), 1); 
+                boolean resultado = ingredienteBO.reducirStock(ingrediente.getId(), 1);
                 if (resultado) {
                     ingrediente.setCantidadStock(ingrediente.getCantidadStock() - 1);
                     actualizarTabla();
@@ -103,7 +122,7 @@ public class PantallaTablaIngredientes extends javax.swing.JFrame {
 
     private void aumentarStock(IngredienteViejoDTO ingrediente) {
         try {
-            boolean resultado = ingredienteBO.aumentarStock(ingrediente.getId(), 1); 
+            boolean resultado = ingredienteBO.aumentarStock(ingrediente.getId(), 1);
             if (resultado) {
                 ingrediente.setCantidadStock(ingrediente.getCantidadStock() + 1);
                 actualizarTabla();
@@ -130,7 +149,7 @@ public class PantallaTablaIngredientes extends javax.swing.JFrame {
     }
 
     private void actualizarTabla() {
-        modelo.setRowCount(0); 
+        modelo.setRowCount(0);
         for (IngredienteViejoDTO ingrediente : ingredientes) {
             Object[] fila = {
                 ingrediente.getId(),
@@ -141,10 +160,11 @@ public class PantallaTablaIngredientes extends javax.swing.JFrame {
                 crearBoton("Aumentar Stock", ingrediente),
                 crearBoton("Eliminar", ingrediente)
             };
-            modelo.addRow(fila); 
+            modelo.addRow(fila);
         }
     }
 
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -166,9 +186,19 @@ public class PantallaTablaIngredientes extends javax.swing.JFrame {
 
         txtNombreIngrediente.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         txtNombreIngrediente.setEnabled(false);
+        txtNombreIngrediente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreIngredienteKeyTyped(evt);
+            }
+        });
 
         comboBoxUnidadMedida.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         comboBoxUnidadMedida.setEnabled(false);
+        comboBoxUnidadMedida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboBoxUnidadMedidaActionPerformed(evt);
+            }
+        });
 
         chkUnidadMedida.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         chkUnidadMedida.setText("Unidad de medida");
@@ -285,20 +315,75 @@ public class PantallaTablaIngredientes extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void chkUnidadMedidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkUnidadMedidaActionPerformed
+        boolean estado = chkUnidadMedida.isSelected();
+        comboBoxUnidadMedida.setEnabled(estado);
 
+        cargarIngredientesTabla();
     }//GEN-LAST:event_chkUnidadMedidaActionPerformed
 
     private void chkNombreIngredienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkNombreIngredienteActionPerformed
+        boolean estado = chkNombreIngrediente.isSelected();
+        txtNombreIngrediente.setEnabled(estado);
 
+        cargarIngredientesTabla();
     }//GEN-LAST:event_chkNombreIngredienteActionPerformed
 
     private void btnVolverAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverAtrasActionPerformed
+        if (this.modo == ModoTablaIngredientes.INGREDIENTE) {
+            ControlNavegacion.mostrarPantallaMenuIngrediente();
+        } else if (this.modo == ModoTablaIngredientes.PRODUCTO) {
+            //regresar a módulo producto
+        }
 
+        this.dispose();
     }//GEN-LAST:event_btnVolverAtrasActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
+        int filaSeleccionada = tablaIngredientes.getSelectedRow();
+        Long id = Optional.ofNullable(filaSeleccionada != -1 ? modelo.getValueAt(filaSeleccionada, 0) : null)
+                .map(valor -> (valor instanceof Number) ? ((Number) valor).longValue() : Long.valueOf(valor.toString()))
+                .orElse(null);
+
+        if (id == null) {
+            JOptionPane.showMessageDialog(null, "Selecciona un producto");
+            return;
+        }
+
+        //logica para que agregar ingrediente al producto
 
     }//GEN-LAST:event_btnSeleccionarActionPerformed
+
+    private void txtNombreIngredienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreIngredienteKeyTyped
+
+        if (timer != null) {
+            timer.stop();
+        }
+
+        timer = new Timer(TIPO_DEBOUNCE, e -> {
+            String filtroNombre = chkNombreIngrediente.isSelected() ? txtNombreIngrediente.getText().strip() : "";
+            String filtroUnidadMedida = chkUnidadMedida.isSelected() ? comboBoxUnidadMedida.getSelectedItem().toString().strip() : "";
+
+            this.ingredientes = ControlNavegacion.obtenerIngredientes(filtroNombre, filtroUnidadMedida);
+
+            cargarIngredientesTabla();
+        });
+
+        timer.setRepeats(false);
+        timer.start();
+
+    }//GEN-LAST:event_txtNombreIngredienteKeyTyped
+
+    private void comboBoxUnidadMedidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxUnidadMedidaActionPerformed
+        if (chkUnidadMedida.isSelected()) {
+        String filtroNombre = chkNombreIngrediente.isSelected() ? txtNombreIngrediente.getText().strip() : "";
+        String filtroUnidadMedida = comboBoxUnidadMedida.getSelectedItem().toString().strip();
+
+        this.ingredientes = ControlNavegacion.obtenerIngredientes(filtroNombre, filtroUnidadMedida);
+
+        cargarIngredientesTabla();
+    }
+
+    }//GEN-LAST:event_comboBoxUnidadMedidaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
