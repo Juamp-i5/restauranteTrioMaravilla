@@ -1,5 +1,4 @@
-package pantallas;
-
+package Encriptador;
 
 import java.util.Base64;
 

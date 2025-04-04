@@ -1,5 +1,6 @@
 package pantallas;
 
+import Encriptador.Encriptador;
 import BOs.ClienteBO;
 import DTOs.entrada.ClienteNuevoDTO;
 import control.ControlNavegacion;
@@ -47,6 +48,12 @@ public class PantallaRegistroCliente extends javax.swing.JFrame {
                 
                 clienteBO.persistirClienteFrecuente(clienteIngresado);
                 JOptionPane.showMessageDialog(this, "Cliente registrado correctamente");
+                
+                EspacioTextoNombre.setText("");
+                EspacioTextoApellidoP.setText("");
+                EspacioTextoApellidoM.setText("");
+                EspacioTextoTelefono.setText("");
+                EspacioTextoCorreo.setText("");              
             }
             
         } catch (IllegalArgumentException e) {

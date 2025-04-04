@@ -1,5 +1,6 @@
 package pantallas;
 
+import Encriptador.Encriptador;
 import BOs.ClienteBO;
 import DTOs.salida.ClienteViejoDTO;
 import DTOs.salida.ComandaViejaDTO;
@@ -62,6 +63,8 @@ public class PantallaTablaClientes extends javax.swing.JFrame {
             String ApellidoP = cliente.getApellidoP();
             String ApellidoM = cliente.getApellidoM();
             String NombreCompleto = Nombre + " " + ApellidoP + " " + ApellidoM;
+            String telefono = cliente.getTelefono();
+            String correo = cliente.getCorreo();
 
             String telefonoDesencriptado = Encriptador.desencriptarBase64(cliente.getTelefono());
             String correoDesencriptado = Encriptador.desencriptarBase64(cliente.getCorreo());

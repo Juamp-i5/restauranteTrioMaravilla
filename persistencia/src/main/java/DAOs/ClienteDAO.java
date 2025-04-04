@@ -1,5 +1,6 @@
 package DAOs;
 
+import Encriptador.Encriptador;
 import conexion.Conexion;
 import entidades.Cliente;
 import entidades.ClienteFrecuente;
@@ -7,6 +8,7 @@ import entidades.Comanda;
 import excepciones.PersistenciaException;
 import interfaces.IClienteDAO;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.RollbackException;
@@ -142,28 +144,21 @@ public class ClienteDAO implements IClienteDAO {
     public List<Cliente> obtenerClientesFiltrados(String filtroNombre, String filtroCorreo, String filtroTelefono) throws PersistenciaException {
         EntityManager em = Conexion.getEntityManager();
         try {
-            String queryString = "SELECT c FROM ClienteFrecuente c WHERE 1=1"; // Base de consulta dinámica
-
+            String queryString = "SELECT c FROM ClienteFrecuente c WHERE 1=1";
             if (!filtroNombre.isEmpty()) {
                 queryString += " AND c.nombres LIKE :nombre";
             }
-            if (!filtroCorreo.isEmpty()) {
-                queryString += " AND c.correoElectronico LIKE :correo";
-            }
-            if (!filtroTelefono.isEmpty()) {
-                queryString += " AND c.telefono LIKE :telefono";
-            }
             Query query = em.createQuery(queryString, Cliente.class);
+
             if (!filtroNombre.isEmpty()) {
                 query.setParameter("nombre", "%" + filtroNombre + "%");
             }
-            if (!filtroCorreo.isEmpty()) {
-                query.setParameter("correo", "%" + filtroCorreo + "%");
-            }
-            if (!filtroTelefono.isEmpty()) {
-                query.setParameter("telefono", "%" + filtroTelefono + "%");
-            }
-            return query.getResultList();
+            List<Cliente> clientes = query.getResultList();
+            return clientes.stream()
+                    .filter(c -> (filtroCorreo.isEmpty() || desencriptar(c.getCorreoElectronico()).contains(filtroCorreo)))
+                    .filter(c -> (filtroTelefono.isEmpty() || desencriptar(c.getTelefono()).contains(filtroTelefono)))
+                    .collect(Collectors.toList());
+
         } catch (Exception e) {
             throw new PersistenciaException("Error al obtener clientes filtrados", e);
         } finally {
@@ -172,7 +167,15 @@ public class ClienteDAO implements IClienteDAO {
             }
         }
     }
-    
+
+    private String desencriptar(String datoEncriptado) {
+        try {
+            return Encriptador.desencriptarBase64(datoEncriptado);
+        } catch (Exception e) {
+            return ""; 
+        }
+    }
+
 //    @Override
 //    public ClienteFrecuente calcularHistorialCliente(Long idCliente) throws PersistenciaException {
 //        ClienteFrecuente cliente = obtenerClienteFrecuente(idCliente);
