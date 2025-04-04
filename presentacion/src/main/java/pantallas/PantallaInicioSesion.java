@@ -85,14 +85,14 @@ public class PantallaInicioSesion extends javax.swing.JFrame {
 
     private void btnAdministradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdministradorActionPerformed
         ControlNavegacion.setModoMenu(ModoMenu.ADMINISTRADOR);
-        ControlNavegacion.mostrarPantallaMenuOpciones();
+        ControlNavegacion.mostrarPantallaMenuOpciones(ModoMenu.ADMINISTRADOR);
         
         this.dispose();
     }//GEN-LAST:event_btnAdministradorActionPerformed
 
     private void btnMeseroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMeseroActionPerformed
         ControlNavegacion.setModoMenu(ModoMenu.MESERO);
-        ControlNavegacion.mostrarPantallaMenuOpciones();
+        ControlNavegacion.mostrarPantallaMenuOpciones(ModoMenu.MESERO);
         
         this.dispose();
     }//GEN-LAST:event_btnMeseroActionPerformed

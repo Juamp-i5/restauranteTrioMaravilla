@@ -34,7 +34,7 @@ public class Comanda implements Serializable {
     
     @ManyToOne
     @JoinColumn(name = "ID_CLIENTE")
-    private Cliente cliente;
+    private ClienteFrecuente cliente;
 
     public Comanda() {
     }
@@ -91,7 +91,7 @@ public class Comanda implements Serializable {
         return cliente;
     }
 
-    public void setCliente(Cliente cliente) {
+    public void setCliente(ClienteFrecuente cliente) {
         this.cliente = cliente;
     }
 

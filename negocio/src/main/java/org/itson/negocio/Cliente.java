@@ -36,16 +36,10 @@ public class Cliente {
 //        }catch(NegocioException e){
 //           System.err.println("Error de negocio: " + e.getMessage());
 //        }
-        
-        try{
-           long id = 1;
-            System.out.println(clienteBO.obtenerClienteFrecuente(id));
-            System.out.println();
-        }catch(NegocioException e){
-           System.err.println("Error de negocio: " + e.getMessage());
-        }
-            
-        
+        long idCliente = 1;
+        long idComanda = 1;
+        System.out.println(clienteBO.obtenerClientesFrecuentes());
+
     }
-    
+
 }

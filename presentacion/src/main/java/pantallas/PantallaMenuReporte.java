@@ -5,6 +5,7 @@
 package pantallas;
 
 import control.ControlNavegacion;
+import control.enums.ModoMenu;
 import control.enums.ModoTablaProductos;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -157,7 +158,7 @@ public class PantallaMenuReporte extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVolveRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolveRActionPerformed
-        ControlNavegacion.mostrarPantallaMenuOpciones();
+        ControlNavegacion.mostrarPantallaMenuOpciones(ModoMenu.ADMINISTRADOR);
         this.dispose();
     }//GEN-LAST:event_btnVolveRActionPerformed
 

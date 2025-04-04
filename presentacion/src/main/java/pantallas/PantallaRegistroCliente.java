@@ -4,7 +4,11 @@ import Encriptador.Encriptador;
 import BOs.ClienteBO;
 import DTOs.entrada.ClienteNuevoDTO;
 import control.ControlNavegacion;
+import control.enums.ModoMenu;
+import entidades.ClienteFrecuente;
+import excepciones.NegocioException;
 import java.time.LocalDate;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -15,6 +19,7 @@ public class PantallaRegistroCliente extends javax.swing.JFrame {
 
     ClienteBO clienteBO = new ClienteBO();
     ControlNavegacion control = new ControlNavegacion();
+    List<ClienteFrecuente> lista = clienteBO.obtenerClientesFrecuentes();
 
     /**
      * Creates new form PantallaaRegistroCliente
@@ -24,6 +29,7 @@ public class PantallaRegistroCliente extends javax.swing.JFrame {
     }
 
     private void validarRegistro() {
+
         LocalDate fechaActual = LocalDate.now();
 
         String Nombres = EspacioTextoNombre.getText();
@@ -37,7 +43,17 @@ public class PantallaRegistroCliente extends javax.swing.JFrame {
         try {
             if (Nombres.isBlank() || ApellidoP.isBlank() || Telefono.isBlank() || Correo.isBlank()) {
                 JOptionPane.showMessageDialog(this, "Error: Falta informacion requerida", "Error", JOptionPane.ERROR_MESSAGE);
-            }else {
+            } else {
+                if (existeTelefono(telefonoEncriptado)) {
+                    JOptionPane.showMessageDialog(this, "Error: El teléfono ya está registrado en la base de datos", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                if (existeCorreo(correoEncriptado)) {
+                    JOptionPane.showMessageDialog(this, "Error: El correo ya está registrado en la base de datos", "Error", JOptionPane.ERROR_MESSAGE);
+                    return; 
+                }
+
                 ClienteNuevoDTO clienteIngresado = new ClienteNuevoDTO();
                 clienteIngresado.setNombres(Nombres);
                 clienteIngresado.setApellidoP(ApellidoP);
@@ -45,23 +61,49 @@ public class PantallaRegistroCliente extends javax.swing.JFrame {
                 clienteIngresado.setTelefono(telefonoEncriptado);
                 clienteIngresado.setCorreo(correoEncriptado);
                 clienteIngresado.setFechaRegistro(fechaActual);
-                
+
                 clienteBO.persistirClienteFrecuente(clienteIngresado);
                 JOptionPane.showMessageDialog(this, "Cliente registrado correctamente");
-                
+
                 EspacioTextoNombre.setText("");
                 EspacioTextoApellidoP.setText("");
                 EspacioTextoApellidoM.setText("");
                 EspacioTextoTelefono.setText("");
-                EspacioTextoCorreo.setText("");              
+                EspacioTextoCorreo.setText("");
+                this.dispose();
+                ControlNavegacion.mostrarPantallaMenuOpciones(ModoMenu.ADMINISTRADOR);
             }
-            
+
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Ocurrió un error al procesar el cliente: ",
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    public boolean existeCorreo(String correo) throws NegocioException {
+        String correoDesencriptadoNuevo = Encriptador.desencriptarBase64(correo);
+
+        for (ClienteFrecuente c : lista) {
+            String correoDescifradoBD = Encriptador.desencriptarBase64(c.getCorreoElectronico());
+            if (correoDescifradoBD.equals(correoDesencriptadoNuevo)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean existeTelefono(String correo) throws NegocioException {
+        String telefonoDesencriptadoNuevo = Encriptador.desencriptarBase64(correo);
+
+        for (ClienteFrecuente c : lista) {
+            String telefonoDescifradoBD = Encriptador.desencriptarBase64(c.getTelefono());
+            if (telefonoDescifradoBD.equals(telefonoDesencriptadoNuevo)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -233,7 +275,7 @@ public class PantallaRegistroCliente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        ControlNavegacion.mostrarPantallaMenuOpciones();
+        ControlNavegacion.mostrarPantallaMenuOpciones(ModoMenu.ADMINISTRADOR);
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 

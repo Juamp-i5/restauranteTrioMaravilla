@@ -32,62 +32,17 @@ public class ClienteDAO implements IClienteDAO {
     }
 
     @Override
-    public List<ClienteFrecuente> obtenerClientesFrecuentesPorNombre(String nombreCliente) throws PersistenciaException {
-        EntityManager em = Conexion.getEntityManager();
-        try {
-            List<ClienteFrecuente> lista = em.createQuery("SELECT c FROM ClienteFrecuente c WHERE c.nombres = :nombre", ClienteFrecuente.class)
-                    .setParameter("nombre", nombreCliente)
-                    .getResultList();
-            return lista;
-        } catch (Exception e) {
-            throw new PersistenciaException("Error al obtener el cliente frecuente por nombre", e);
-        } finally {
-            em.close();
-        }
-    }
-
-    @Override
-    public List<ClienteFrecuente> obtenerClientesFrecuentesPorCorreo(String CorreoCliente) throws PersistenciaException {
-        EntityManager em = Conexion.getEntityManager();
-        try {
-            List<ClienteFrecuente> lista = em.createQuery("SELECT c FROM ClienteFrecuente c WHERE c.correoElectronico = :correo", ClienteFrecuente.class)
-                    .setParameter("correo", CorreoCliente)
-                    .getResultList();
-            return lista;
-        } catch (Exception e) {
-            throw new PersistenciaException("Error al obtener el cliente frecuente por correo", e);
-        } finally {
-            em.close();
-        }
-    }
-
-    @Override
-    public List<ClienteFrecuente> obtenerClienteFrecuentePorTelefono(String TelefonoCliente) throws PersistenciaException {
-        EntityManager em = Conexion.getEntityManager();
-        try {
-            List<ClienteFrecuente> lista = em.createQuery("SELECT c FROM ClienteFrecuente c WHERE c.telefono = :telefono", ClienteFrecuente.class)
-                    .setParameter("telefono", TelefonoCliente)
-                    .getResultList();
-            System.out.println(lista);
-            return lista;
-        } catch (Exception e) {
-            throw new PersistenciaException("Error al obtener el cliente frecuente por telefono", e);
-        } finally {
-            em.close();
-        }
-    }
-
-    @Override
-    public List<ClienteFrecuente> obtenerClientesFrecuentes() throws PersistenciaException {
+    public List<ClienteFrecuente> obtenerClientesFrecuentes(){
         EntityManager em = Conexion.getEntityManager();
         try {
             return em.createQuery("SELECT c FROM ClienteFrecuente c", ClienteFrecuente.class)
                     .getResultList();
         } catch (Exception e) {
-            throw new PersistenciaException("Error al obtener la lista de clientes frecuentes", e);
+            System.out.println("Error al obtener la lista de clientes frecuentes");
         } finally {
             em.close();
         }
+        return null;
     }
 
     @Override
@@ -117,7 +72,7 @@ public class ClienteDAO implements IClienteDAO {
         try {
             em.getTransaction().begin();
 
-            Cliente cliente = em.find(Cliente.class, idCliente);
+            ClienteFrecuente cliente = (ClienteFrecuente) em.find(Cliente.class, idCliente);
             if (cliente == null) {
                 throw new PersistenciaException("Cliente con ID " + idCliente + " no encontrado.");
             }
@@ -128,7 +83,6 @@ public class ClienteDAO implements IClienteDAO {
             if (comanda.getCliente() != null) {
                 throw new PersistenciaException("La comanda ya está asignada a un cliente.");
             }
-
             comanda.setCliente(cliente);
             em.merge(comanda);
             em.getTransaction().commit();
@@ -172,7 +126,7 @@ public class ClienteDAO implements IClienteDAO {
         try {
             return Encriptador.desencriptarBase64(datoEncriptado);
         } catch (Exception e) {
-            return ""; 
+            return "";
         }
     }
 

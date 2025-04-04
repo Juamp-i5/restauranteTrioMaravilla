@@ -1,6 +1,7 @@
 package pantallas;
 
 import control.ControlNavegacion;
+import control.enums.ModoMenu;
 import control.enums.ModoTablaIngredientes;
 
 /**
@@ -109,7 +110,7 @@ public class PantallaMenuIngrediente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAdministrarProductosActionPerformed
 
     private void btnVolverAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverAtrasActionPerformed
-        ControlNavegacion.mostrarPantallaMenuOpciones();
+        ControlNavegacion.mostrarPantallaMenuOpciones(ModoMenu.ADMINISTRADOR);
 
         this.dispose();
     }//GEN-LAST:event_btnVolverAtrasActionPerformed

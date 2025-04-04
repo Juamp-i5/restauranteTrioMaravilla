@@ -2,6 +2,7 @@ package pantallas;
 
 import DTOs.salida.MostrarMesaDTO;
 import control.ControlNavegacion;
+import control.enums.ModoMenu;
 import java.awt.GridLayout;
 import java.util.List;
 import javax.swing.JPanel;
@@ -135,7 +136,7 @@ public class PantallaMesas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVolverAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverAtrasActionPerformed
-        ControlNavegacion.mostrarPantallaMenuOpciones();
+        ControlNavegacion.mostrarPantallaMenuOpciones(ModoMenu.ADMINISTRADOR);
 
         this.dispose();
     }//GEN-LAST:event_btnVolverAtrasActionPerformed

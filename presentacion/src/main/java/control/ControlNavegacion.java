@@ -54,7 +54,7 @@ public class ControlNavegacion {
         frame.setVisible(true);
     }
 
-    public static void mostrarPantallaMenuOpciones() {
+    public static void mostrarPantallaMenuOpciones(ModoMenu modo) {
         JFrame frame = new PantallaMenuOpciones();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
@@ -169,10 +169,6 @@ public class ControlNavegacion {
 
         try {
             clientes = clienteBO.obtenerClientesFiltrados(filtroNombre, filtroCorreo, filtroTelefono);
-            if (clientes == null || clientes.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "No hay clientes con los filtros seleccionados", "Alerta", JOptionPane.INFORMATION_MESSAGE);
-            }
-
         } catch (NegocioException ex) {
             JOptionPane.showMessageDialog(null, "Ocurrió un error al obtener los clientes. Verifica los filtros o revisa la consola.", "Error", JOptionPane.ERROR_MESSAGE);
             ex.printStackTrace();

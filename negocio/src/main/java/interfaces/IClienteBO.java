@@ -24,4 +24,6 @@ public interface IClienteBO {
     public void asignarComandaACliente(Long idComanda, Long idCliente) throws NegocioException;
     
     public ClienteViejoDTO obtenerClienteFrecuente(Long idClienteFrecuente) throws NegocioException;
+    
+    public List<ClienteFrecuente> obtenerClientesFrecuentes() throws NegocioException;
 }

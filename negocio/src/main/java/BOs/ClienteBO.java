@@ -91,4 +91,18 @@ public class ClienteBO implements IClienteBO {
             throw new NegocioException("Hubo un error al buscar al cliente por ID");
         }
     }
+
+    @Override
+    public List<ClienteFrecuente> obtenerClientesFrecuentes(){
+        try {
+            List<ClienteFrecuente> lista = clienteDAO.obtenerClientesFrecuentes();
+            if (lista==null) {
+                System.out.println("No hay clientes registrados");
+            }
+            return lista;
+        } catch (PersistenciaException ex) {
+            System.out.println("Hubo un error al buscar la lista de clientes");
+        }
+        return null;
+    }
 }

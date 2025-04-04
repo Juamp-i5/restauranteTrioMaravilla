@@ -414,6 +414,10 @@ public class PantallaTablaClientes extends javax.swing.JFrame {
                         );
                         if (confirmacion == JOptionPane.YES_OPTION) {
                             Long idCliente = cliente.getId();
+                            if (comanda == null || comanda.getId() == null) {
+                                JOptionPane.showMessageDialog(PantallaTablaClientes.this, "Comanda no válida o no existente", "Error", JOptionPane.ERROR_MESSAGE);
+                                return;
+                            }
                             Long idComanda = comanda.getId();
                             try {
                                 boolean confirmar = AsignacionCliente(idComanda, idCliente);
@@ -439,7 +443,7 @@ public class PantallaTablaClientes extends javax.swing.JFrame {
             } catch (NegocioException ex) {
                 Logger.getLogger(PantallaTablaClientes.class.getName()).log(Level.SEVERE, null, ex);
             }
-            return false;
+            return true;
         }
 
         @Override

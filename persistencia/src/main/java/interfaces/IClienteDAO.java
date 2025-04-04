@@ -11,13 +11,7 @@ import java.util.List;
  */
 public interface IClienteDAO {
     public Cliente obtenerClienteFrecuente(Long idClienteFrecuente) throws PersistenciaException;
-    
-    public List<ClienteFrecuente> obtenerClientesFrecuentesPorNombre(String nombreCliente) throws PersistenciaException;
-    
-    public List<ClienteFrecuente> obtenerClientesFrecuentesPorCorreo(String CorreoCliente) throws PersistenciaException;
-    
-    public List<ClienteFrecuente> obtenerClienteFrecuentePorTelefono(String TelefonoCliente) throws PersistenciaException;
-    
+
     public List<ClienteFrecuente> obtenerClientesFrecuentes() throws PersistenciaException;
     
     public Cliente persistirCliente(Cliente cliente) throws PersistenciaException;
