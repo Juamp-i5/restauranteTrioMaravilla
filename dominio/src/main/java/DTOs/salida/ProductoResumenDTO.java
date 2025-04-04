@@ -1,6 +1,6 @@
 package DTOs.salida;
 
-import entidades.enums.TipoProducto;
+import enums.TipoProducto;
 
 public class ProductoResumenDTO {
 

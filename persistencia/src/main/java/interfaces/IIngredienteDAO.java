@@ -5,7 +5,7 @@
 package interfaces;
 
 import entidades.Ingrediente;
-import entidades.enums.UnidadMedida;
+import enums.UnidadMedida;
 import excepciones.PersistenciaException;
 import java.util.List;
 

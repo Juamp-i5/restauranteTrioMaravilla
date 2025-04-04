@@ -1,7 +1,7 @@
 package entidades;
 
-import entidades.enums.EstadoProducto;
-import entidades.enums.TipoProducto;
+import enums.EstadoProducto;
+import enums.TipoProducto;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.*;

@@ -4,7 +4,7 @@
  */
 package entidades;
 
-import entidades.enums.UnidadMedida;
+import enums.UnidadMedida;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;

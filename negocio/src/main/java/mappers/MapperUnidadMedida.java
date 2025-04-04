@@ -1,7 +1,7 @@
 package mappers;
 
 import DTOs.salida.UnidadMedidaDTO;
-import entidades.enums.UnidadMedida;
+import enums.UnidadMedida;
 
 /**
  *

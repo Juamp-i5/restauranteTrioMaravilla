@@ -5,7 +5,7 @@ import DTOs.salida.ClienteViejoDTO;
 import DTOs.salida.ComandaViejaDTO;
 import DTOs.salida.ProductoResumenDTO;
 import control.ControlNavegacion;
-import entidades.enums.TipoProducto;
+import enums.TipoProducto;
 import excepciones.NegocioException;
 import java.awt.BorderLayout;
 import java.awt.Color;

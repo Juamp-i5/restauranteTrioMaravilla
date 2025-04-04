@@ -4,10 +4,11 @@ import DTOs.salida.ProductoResumenDTO;
 import control.ControlNavegacion;
 import control.enums.ModoDetallesProducto;
 import control.enums.ModoTablaProductos;
-import entidades.enums.TipoProducto;
+import enums.TipoProducto;
 import java.util.List;
 import java.util.Optional;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 
 public class PantallaTablaProductos extends javax.swing.JFrame {
@@ -15,27 +16,44 @@ public class PantallaTablaProductos extends javax.swing.JFrame {
     List<ProductoResumenDTO> productos;
     ModoTablaProductos modo;
     DefaultTableModel modelo;
+    private Timer timer;
+    private static final int TIPO_DEBOUNCE = 50;
 
     public PantallaTablaProductos(List<ProductoResumenDTO> productos, ModoTablaProductos modo) {
         initComponents();
 
-        this.productos = productos;
         this.modo = modo;
 
         for (TipoProducto tipo : TipoProducto.values()) {
             cmbCategoria.addItem(tipo.toString());
         }
 
+        cargarProductosTabla();
+    }
+
+    private void cargarProductosTabla() {
+        actualizarProductosFiltrados();
+
         modelo = (DefaultTableModel) tblProductos.getModel();
-        for (ProductoResumenDTO producto : productos) {
-            Object[] fila = {
-                producto.getId(),
-                producto.getNombre(),
-                producto.getTipo(),
-                producto.getPrecio()
-            };
-            modelo.addRow(fila);
+        modelo.setRowCount(0);
+        if (productos != null) {
+            for (ProductoResumenDTO producto : productos) {
+                Object[] fila = {
+                    producto.getId(),
+                    producto.getNombre(),
+                    producto.getTipo(),
+                    producto.getPrecio()
+                };
+                modelo.addRow(fila);
+            }
         }
+    }
+
+    private void actualizarProductosFiltrados() {
+        String filtroProducto = chkNombreProducto.isSelected() ? txtNombreProducto.getText().strip() : "";
+        String filtroCategoria = chkCategoria.isSelected() ? cmbCategoria.getSelectedItem().toString().strip() : "";
+
+        this.productos = ControlNavegacion.obtenerProductos(filtroProducto, filtroCategoria);
     }
 
     @SuppressWarnings("unchecked")
@@ -122,6 +140,14 @@ public class PantallaTablaProductos extends javax.swing.JFrame {
                 txtNombreProductoActionPerformed(evt);
             }
         });
+        txtNombreProducto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtNombreProductoKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreProductoKeyTyped(evt);
+            }
+        });
 
         btnFiltrar.setBackground(new java.awt.Color(135, 174, 206));
         btnFiltrar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -134,6 +160,11 @@ public class PantallaTablaProductos extends javax.swing.JFrame {
 
         cmbCategoria.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         cmbCategoria.setEnabled(false);
+        cmbCategoria.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbCategoriaItemStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -201,8 +232,8 @@ public class PantallaTablaProductos extends javax.swing.JFrame {
         Long id = Optional.ofNullable(filaSeleccionada != -1 ? modelo.getValueAt(filaSeleccionada, 0) : null)
                 .map(valor -> (valor instanceof Number) ? ((Number) valor).longValue() : Long.valueOf(valor.toString()))
                 .orElse(null);
-        
-        if(id == null) {
+
+        if (id == null) {
             JOptionPane.showMessageDialog(null, "Selecciona un producto");
             return;
         }
@@ -231,11 +262,15 @@ public class PantallaTablaProductos extends javax.swing.JFrame {
     private void chkNombreProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkNombreProductoActionPerformed
         boolean estado = chkNombreProducto.isSelected();
         txtNombreProducto.setEnabled(estado);
+
+        cargarProductosTabla();
     }//GEN-LAST:event_chkNombreProductoActionPerformed
 
     private void chkCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkCategoriaActionPerformed
         boolean estado = chkCategoria.isSelected();
         cmbCategoria.setEnabled(estado);
+
+        cargarProductosTabla();
     }//GEN-LAST:event_chkCategoriaActionPerformed
 
     private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
@@ -249,6 +284,42 @@ public class PantallaTablaProductos extends javax.swing.JFrame {
     private void txtNombreProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreProductoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNombreProductoActionPerformed
+
+    private void txtNombreProductoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreProductoKeyTyped
+        // Si ya hay un temporizador en ejecución, lo cancelamos
+        if (timer != null) {
+            timer.stop();
+        }
+
+        // Iniciamos un nuevo temporizador
+        timer = new Timer(TIPO_DEBOUNCE, e -> {
+            // Obtener los filtros
+            String filtroProducto = chkNombreProducto.isSelected() ? txtNombreProducto.getText().strip() : "";
+            String filtroCategoria = chkCategoria.isSelected() ? cmbCategoria.getSelectedItem().toString().strip() : "";
+
+            // Realizar la consulta para obtener productos según los filtros
+            try {
+                this.productos = ControlNavegacion.obtenerProductos(filtroProducto, filtroCategoria);
+                // Actualizar la tabla con los nuevos datos
+                cargarProductosTabla();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Error al obtener productos: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        // Inicia el temporizador (solo se ejecutará una vez)
+        timer.setRepeats(false);
+        timer.start();
+
+    }//GEN-LAST:event_txtNombreProductoKeyTyped
+
+    private void cmbCategoriaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbCategoriaItemStateChanged
+        cargarProductosTabla();
+    }//GEN-LAST:event_cmbCategoriaItemStateChanged
+
+    private void txtNombreProductoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreProductoKeyReleased
+
+    }//GEN-LAST:event_txtNombreProductoKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

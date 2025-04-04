@@ -6,7 +6,7 @@ package org.itson.negocio;
 
 import BOs.IngredienteBO;
 import DTOs.entrada.IngredienteNuevoDTO;
-import entidades.enums.UnidadMedida;
+import enums.UnidadMedida;
 import excepciones.NegocioException;
 import excepciones.PersistenciaException;
 
