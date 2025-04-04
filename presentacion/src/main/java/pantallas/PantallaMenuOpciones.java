@@ -158,12 +158,12 @@ public class PantallaMenuOpciones extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
-        // TODO add your handling code here:
+        ControlNavegacion.mostrarPantallaMenuReporte();
+        this.dispose();
     }//GEN-LAST:event_btnReportesActionPerformed
 
     private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
         ControlNavegacion.mostrarPantallaInicioSesion();
-
         this.dispose();
     }//GEN-LAST:event_btnLogOutActionPerformed
 

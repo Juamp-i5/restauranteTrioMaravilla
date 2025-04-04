@@ -1,18 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package pantallas;
 
 import control.ControlNavegacion;
+import control.enums.ModoTablaProductos;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -26,6 +21,7 @@ public class PantallaTipoCliente extends javax.swing.JFrame {
     private final int DIMENSION_BOTON_Y = 50;
     private final JButton BTN_CLIENTE = new PlantillaBotonMenuOpciones("Cliente sin registrar", "#F5F3D8");
     private final JButton BTN_CLIENTE_FRECUENTE = new PlantillaBotonMenuOpciones("Cliente frecuente", "#F5F3D8");
+    
     /**
      * Creates new form PantallaTipoCliente
      */
@@ -43,22 +39,18 @@ public class PantallaTipoCliente extends javax.swing.JFrame {
         pnlBotones.add(BTN_CLIENTE);
         pnlBotones.add(BTN_CLIENTE_FRECUENTE);
         panelBotones.setLayout(new BorderLayout());
-
+        
         Font botonFont1 = new Font("Segoe UI", Font.PLAIN, 20);
-
+        
         btnRegresar = new JButton("<---");
         btnRegresar.setFont(botonFont1);
-
         btnRegresar.setPreferredSize(new Dimension(DIMENSION_BOTON_X, DIMENSION_BOTON_Y));
-
+        
         JPanel panelVacio = new JPanel();
         panelVacio.setPreferredSize(new Dimension(0, 0));
-
-
-
-        panelBotones.add(btnRegresar, BorderLayout.WEST);
-        panelBotones.add(panelVacio, BorderLayout.CENTER);
         
+        panelBotones.add(btnRegresar, BorderLayout.WEST);
+        panelBotones.add(panelVacio, BorderLayout.CENTER);      
         btnRegresar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -70,7 +62,7 @@ public class PantallaTipoCliente extends javax.swing.JFrame {
         BTN_CLIENTE.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                ControlNavegacion.mostrarPantallaTablaProductos(ModoTablaProductos.COMANDA);
                 dispose();
             }
         });
@@ -158,7 +150,7 @@ public class PantallaTipoCliente extends javax.swing.JFrame {
                 .addComponent(lblTitulo2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(sepArriba1, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 460, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 457, Short.MAX_VALUE)
                 .addComponent(sepAbajo2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1, 1, 1)
                 .addComponent(panelBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
