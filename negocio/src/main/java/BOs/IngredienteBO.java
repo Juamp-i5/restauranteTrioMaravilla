@@ -126,9 +126,6 @@ public class IngredienteBO implements IIngredienteBO {
         if (idIngrediente == null || idIngrediente <= 0) {
             throw new NegocioException("El ID del ingrediente es inválido.");
         }
-        if (cantidad == null || cantidad <= 0) {
-            throw new NegocioException("La cantidad a reducir debe ser mayor que cero.");
-        }
 
         try {
             boolean resultado = ingredienteDAO.reducirStock(idIngrediente, cantidad);
@@ -137,9 +134,7 @@ public class IngredienteBO implements IIngredienteBO {
             }
             return true;
         } catch (PersistenciaException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new PersistenciaException("Error al reducir el stock del ingrediente.", e);
+            throw new PersistenciaException(e.getMessage());
         }
     }
 

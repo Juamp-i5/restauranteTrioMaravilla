@@ -78,7 +78,7 @@ public class IngredienteDAO implements IIngredienteDAO {
         }
 
     }
-    
+
     @Override
     public List<Ingrediente> obtenerIngredientesDisponibles() throws PersistenciaException {
         EntityManager em = Conexion.getEntityManager();
@@ -125,7 +125,7 @@ public class IngredienteDAO implements IIngredienteDAO {
             em.getTransaction().begin();
             Ingrediente ingrediente = em.find(Ingrediente.class, idIngrediente);
             if (ingrediente != null) {
-                if (ingrediente.getCantidadStock() >= cantidad) {
+                if (ingrediente.getCantidadStock() > 0) {
                     ingrediente.setCantidadStock(ingrediente.getCantidadStock() - cantidad);
                     em.getTransaction().commit();
                     return true;
@@ -134,6 +134,8 @@ public class IngredienteDAO implements IIngredienteDAO {
                 }
             }
             return false;
+        } catch (PersistenciaException e) {
+            throw e;  
         } catch (Exception e) {
             if (em != null && em.getTransaction().isActive()) {
                 em.getTransaction().rollback();

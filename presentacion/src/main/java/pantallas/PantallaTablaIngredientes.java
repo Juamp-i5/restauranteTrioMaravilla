@@ -10,7 +10,6 @@ import excepciones.PersistenciaException;
 import interfaces.IIngredienteBO;
 import java.util.List;
 import java.util.Optional;
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
@@ -31,8 +30,32 @@ public class PantallaTablaIngredientes extends javax.swing.JFrame {
 
     public PantallaTablaIngredientes(List<IngredienteViejoDTO> ingredientes, ModoTablaIngredientes modo) {
         initComponents();
+        tablaIngredientes.getSelectionModel().addListSelectionListener(event -> {
+            if (!event.getValueIsAdjusting() && tablaIngredientes.getSelectedRow() != -1) {
+                int filaSeleccionada = tablaIngredientes.getSelectedRow();
+                String nombreIngrediente = (String) tablaIngredientes.getValueAt(filaSeleccionada, 1);
+                lblNombreProducto.setText(nombreIngrediente);
+                btnAumentar.setEnabled(true);
+                btnReducir.setEnabled(true);
+                btnEliminar.setEnabled(true);
+                btnSeleccionar.setEnabled(true);
+            }
+        });
+
         if (modo == ModoTablaIngredientes.INGREDIENTE) {
             btnSeleccionar.setVisible(false);
+            btnAumentar.setEnabled(false);
+            btnReducir.setEnabled(false);
+            btnEliminar.setEnabled(false);
+        } else {
+            btnSeleccionar.setEnabled(false);
+            btnAumentar.setVisible(false);
+            btnReducir.setVisible(false);
+            btnEliminar.setVisible(false);
+            lblIngredienteSeleccionado.setVisible(false);
+            lblNombre.setVisible(false);
+            lblNombreProducto.setVisible(false);
+            lblStock.setVisible(false);
         }
 
         this.modo = modo;
@@ -43,6 +66,7 @@ public class PantallaTablaIngredientes extends javax.swing.JFrame {
         }
 
         cargarIngredientesTabla();
+
     }
 
     private void cargarIngredientesTabla() {
@@ -51,30 +75,16 @@ public class PantallaTablaIngredientes extends javax.swing.JFrame {
         modelo = (DefaultTableModel) tablaIngredientes.getModel();
         modelo.setRowCount(0);
 
-        if (modo == ModoTablaIngredientes.PRODUCTO) {
-            for (IngredienteViejoDTO ingrediente : ingredientes) {
-                Object[] fila = {
-                    ingrediente.getId(),
-                    ingrediente.getNombre(),
-                    ingrediente.getUnidadMedida(),
-                    ingrediente.getCantidadStock()
-                };
-                modelo.addRow(fila);
-            }
-        } else if (modo == ModoTablaIngredientes.INGREDIENTE) {
-            for (IngredienteViejoDTO ingrediente : ingredientes) {
-                Object[] fila = {
-                    ingrediente.getId(),
-                    ingrediente.getNombre(),
-                    ingrediente.getUnidadMedida(),
-                    ingrediente.getCantidadStock(),
-                    crearBoton("Restar Stock", ingrediente),
-                    crearBoton("Aumentar Stock", ingrediente),
-                    crearBoton("Eliminar", ingrediente)
-                };
-                modelo.addRow(fila);
-            }
+        for (IngredienteViejoDTO ingrediente : ingredientes) {
+            Object[] fila = {
+                ingrediente.getId(),
+                ingrediente.getNombre(),
+                ingrediente.getUnidadMedida(),
+                ingrediente.getCantidadStock()
+            };
+            modelo.addRow(fila);
         }
+
     }
 
     private void actualizarIngredientesFiltrados() {
@@ -84,87 +94,6 @@ public class PantallaTablaIngredientes extends javax.swing.JFrame {
         this.ingredientes = ControlNavegacion.obtenerIngredientes(filtroNombre, filtroUnidadMedida);
     }
 
-    private JButton crearBoton(String nombre, IngredienteViejoDTO ingrediente) {
-        JButton boton = new JButton(nombre);
-        boton.addActionListener(e -> {
-            switch (nombre) {
-                case "Restar Stock":
-                    restarStock(ingrediente);
-                    break;
-                case "Aumentar Stock":
-                    aumentarStock(ingrediente);
-                    break;
-                case "Eliminar":
-                    eliminarIngrediente(ingrediente);
-                    break;
-            }
-        });
-        return boton;
-    }
-
-    private void restarStock(IngredienteViejoDTO ingrediente) {
-        try {
-            if (ingrediente.getCantidadStock() > 0) {
-                boolean resultado = ingredienteBO.reducirStock(ingrediente.getId(), 1);
-                if (resultado) {
-                    ingrediente.setCantidadStock(ingrediente.getCantidadStock() - 1);
-                    actualizarTabla();
-                } else {
-                    JOptionPane.showMessageDialog(this, "No se pudo reducir el stock.");
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "No se puede restar más stock");
-            }
-        } catch (PersistenciaException | NegocioException e) {
-            JOptionPane.showMessageDialog(this, "Error al reducir stock: " + e.getMessage());
-        }
-    }
-
-    private void aumentarStock(IngredienteViejoDTO ingrediente) {
-        try {
-            boolean resultado = ingredienteBO.aumentarStock(ingrediente.getId(), 1);
-            if (resultado) {
-                ingrediente.setCantidadStock(ingrediente.getCantidadStock() + 1);
-                actualizarTabla();
-            } else {
-                JOptionPane.showMessageDialog(this, "No se pudo aumentar el stock.");
-            }
-        } catch (PersistenciaException | NegocioException e) {
-            JOptionPane.showMessageDialog(this, "Error al aumentar stock: " + e.getMessage());
-        }
-    }
-
-    private void eliminarIngrediente(IngredienteViejoDTO ingrediente) {
-        try {
-            boolean eliminado = ingredienteBO.eliminarIngrediente(ingrediente.getId());
-            if (eliminado) {
-                ingredientes.remove(ingrediente);
-                actualizarTabla();
-            } else {
-                JOptionPane.showMessageDialog(this, "No se pudo eliminar el ingrediente.");
-            }
-        } catch (PersistenciaException | NegocioException e) {
-            JOptionPane.showMessageDialog(this, "Error al eliminar ingrediente: " + e.getMessage());
-        }
-    }
-
-    private void actualizarTabla() {
-        modelo.setRowCount(0);
-        for (IngredienteViejoDTO ingrediente : ingredientes) {
-            Object[] fila = {
-                ingrediente.getId(),
-                ingrediente.getNombre(),
-                ingrediente.getUnidadMedida(),
-                ingrediente.getCantidadStock(),
-                crearBoton("Restar Stock", ingrediente),
-                crearBoton("Aumentar Stock", ingrediente),
-                crearBoton("Eliminar", ingrediente)
-            };
-            modelo.addRow(fila);
-        }
-    }
-
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -181,6 +110,13 @@ public class PantallaTablaIngredientes extends javax.swing.JFrame {
         btnSeleccionar = new javax.swing.JButton();
         scrollTabla = new javax.swing.JScrollPane();
         tablaIngredientes = new javax.swing.JTable();
+        lblIngredienteSeleccionado = new javax.swing.JLabel();
+        lblNombre = new javax.swing.JLabel();
+        lblNombreProducto = new javax.swing.JLabel();
+        lblStock = new javax.swing.JLabel();
+        btnReducir = new javax.swing.JButton();
+        btnAumentar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -228,7 +164,7 @@ public class PantallaTablaIngredientes extends javax.swing.JFrame {
             }
         });
 
-        btnSeleccionar.setBackground(new java.awt.Color(135, 174, 206));
+        btnSeleccionar.setBackground(new java.awt.Color(0, 131, 125));
         btnSeleccionar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnSeleccionar.setText("Seleccionar");
         btnSeleccionar.addActionListener(new java.awt.event.ActionListener() {
@@ -237,6 +173,9 @@ public class PantallaTablaIngredientes extends javax.swing.JFrame {
             }
         });
 
+        scrollTabla.setBackground(new java.awt.Color(255, 255, 255));
+
+        tablaIngredientes.setBackground(new java.awt.Color(204, 204, 204));
         tablaIngredientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -250,14 +189,82 @@ public class PantallaTablaIngredientes extends javax.swing.JFrame {
         ));
         scrollTabla.setViewportView(tablaIngredientes);
 
+        lblIngredienteSeleccionado.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblIngredienteSeleccionado.setForeground(new java.awt.Color(0, 131, 125));
+        lblIngredienteSeleccionado.setText("Ingrediente seleccionado:");
+
+        lblNombre.setText("Nombre:");
+
+        lblNombreProducto.setBackground(new java.awt.Color(255, 255, 255));
+        lblNombreProducto.setText("-");
+        lblNombreProducto.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        lblStock.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblStock.setForeground(new java.awt.Color(0, 131, 125));
+        lblStock.setText("Stock:");
+
+        btnReducir.setBackground(new java.awt.Color(204, 204, 204));
+        btnReducir.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnReducir.setText("-");
+        btnReducir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReducirActionPerformed(evt);
+            }
+        });
+
+        btnAumentar.setBackground(new java.awt.Color(204, 204, 204));
+        btnAumentar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnAumentar.setText("+");
+        btnAumentar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAumentarActionPerformed(evt);
+            }
+        });
+
+        btnEliminar.setBackground(new java.awt.Color(0, 204, 204));
+        btnEliminar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnEliminar.setText("Eliminar ingrediente");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20))
             .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
+                .addGap(20, 20, 20)
                 .addComponent(scrollTabla, javax.swing.GroupLayout.PREFERRED_SIZE, 555, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(232, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(65, 65, 65)
+                        .addComponent(lblIngredienteSeleccionado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(48, 48, 48))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(44, 44, 44)
+                        .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblNombreProducto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(20, 20, 20))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblStock)
+                        .addGap(103, 103, 103))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(81, 81, 81)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnEliminar)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnReducir, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnAumentar, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
@@ -274,20 +281,36 @@ public class PantallaTablaIngredientes extends javax.swing.JFrame {
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(txtNombreIngrediente, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
                                         .addComponent(comboBoxUnidadMedida, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 441, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(0, 302, Short.MAX_VALUE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(btnVolverAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 441, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnVolverAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(0, 349, Short.MAX_VALUE)))
                     .addGap(1, 1, 1)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(163, Short.MAX_VALUE)
-                .addComponent(scrollTabla, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(94, 94, 94))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(lblIngredienteSeleccionado)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblNombre)
+                            .addComponent(lblNombreProducto))
+                        .addGap(27, 27, 27)
+                        .addComponent(lblStock)
+                        .addGap(12, 12, 12)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnReducir)
+                            .addComponent(btnAumentar))
+                        .addGap(38, 38, 38)
+                        .addComponent(btnEliminar)
+                        .addGap(165, 165, 165))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(scrollTabla, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(76, 76, 76)))
+                .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(4, 4, 4)
@@ -305,9 +328,7 @@ public class PantallaTablaIngredientes extends javax.swing.JFrame {
                     .addGap(385, 385, 385)
                     .addComponent(sepAbajo, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(btnSeleccionar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnVolverAtras, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE))
+                    .addComponent(btnVolverAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
@@ -375,24 +396,84 @@ public class PantallaTablaIngredientes extends javax.swing.JFrame {
 
     private void comboBoxUnidadMedidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxUnidadMedidaActionPerformed
         if (chkUnidadMedida.isSelected()) {
-        String filtroNombre = chkNombreIngrediente.isSelected() ? txtNombreIngrediente.getText().strip() : "";
-        String filtroUnidadMedida = comboBoxUnidadMedida.getSelectedItem().toString().strip();
+            String filtroNombre = chkNombreIngrediente.isSelected() ? txtNombreIngrediente.getText().strip() : "";
+            String filtroUnidadMedida = comboBoxUnidadMedida.getSelectedItem().toString().strip();
 
-        this.ingredientes = ControlNavegacion.obtenerIngredientes(filtroNombre, filtroUnidadMedida);
+            this.ingredientes = ControlNavegacion.obtenerIngredientes(filtroNombre, filtroUnidadMedida);
 
-        cargarIngredientesTabla();
-    }
+            cargarIngredientesTabla();
+        }
 
     }//GEN-LAST:event_comboBoxUnidadMedidaActionPerformed
 
+    private void btnReducirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReducirActionPerformed
+        int filaSeleccionada = tablaIngredientes.getSelectedRow();
+        if (filaSeleccionada != -1) {
+            Long idIngrediente = Long.valueOf(tablaIngredientes.getValueAt(filaSeleccionada, 0).toString());
+
+            try {
+                ingredienteBO.reducirStock(idIngrediente, 1);
+                cargarIngredientesTabla();
+
+            } catch (NegocioException | PersistenciaException e) {
+                JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnReducirActionPerformed
+
+    private void btnAumentarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAumentarActionPerformed
+        int filaSeleccionada = tablaIngredientes.getSelectedRow();
+        if (filaSeleccionada != -1) {
+            Long idIngrediente = Long.valueOf(tablaIngredientes.getValueAt(filaSeleccionada, 0).toString());
+
+            try {
+                ingredienteBO.aumentarStock(idIngrediente, 1);
+                cargarIngredientesTabla();
+            } catch (NegocioException | PersistenciaException e) {
+                JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+    }//GEN-LAST:event_btnAumentarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        int filaSeleccionada = tablaIngredientes.getSelectedRow();
+        if (filaSeleccionada != -1) {
+            Long idIngrediente = Long.valueOf(tablaIngredientes.getValueAt(filaSeleccionada, 0).toString());
+            int confirmacion = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea eliminar este ingrediente?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                try {
+                    ingredienteBO.eliminarIngrediente(idIngrediente);
+
+                    JOptionPane.showMessageDialog(this, "Ingrediente eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    cargarIngredientesTabla();
+                    lblNombreProducto.setText("-");
+                    btnAumentar.setEnabled(false);
+                    btnReducir.setEnabled(false);
+                    btnEliminar.setEnabled(false);
+
+                } catch (NegocioException | PersistenciaException e) {
+                    JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAumentar;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnReducir;
     private javax.swing.JButton btnSeleccionar;
     private javax.swing.JButton btnVolverAtras;
     private javax.swing.JCheckBox chkNombreIngrediente;
     private javax.swing.JCheckBox chkUnidadMedida;
     private javax.swing.JComboBox<String> comboBoxUnidadMedida;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblIngredienteSeleccionado;
+    private javax.swing.JLabel lblNombre;
+    private javax.swing.JLabel lblNombreProducto;
+    private javax.swing.JLabel lblStock;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JScrollPane scrollTabla;
     private javax.swing.JSeparator sepAbajo;
