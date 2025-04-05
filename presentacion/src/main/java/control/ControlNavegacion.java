@@ -8,7 +8,7 @@ import BOs.IngredienteBO;
 import BOs.ProductoBO;
 import DTOs.entrada.ClienteNuevoDTO;
 import DTOs.salida.MostrarMesaDTO;
-import DTOs.salida.ProductoIngredientesDTO;
+import DTOs.salida.ProductoIngredientesViejoDTO;
 import DTOs.salida.ClienteViejoDTO;
 import DTOs.salida.ComandaViejaDTO;
 import DTOs.salida.IngredienteViejoDTO;
@@ -158,7 +158,7 @@ public class ControlNavegacion {
     }
 
     public static void mostrarPantallaDetallesProducto(Long idProducto, ModoDetallesProducto modo) {
-        ProductoIngredientesDTO producto = null;
+        ProductoIngredientesViejoDTO producto = null;
         JFrame frame = new PantallaDetallesProducto(producto, modo);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);

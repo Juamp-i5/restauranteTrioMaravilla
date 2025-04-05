@@ -1,6 +1,6 @@
 package pantallas;
 
-import DTOs.salida.ProductoIngredientesDTO;
+import DTOs.salida.ProductoIngredientesViejoDTO;
 import control.ControlNavegacion;
 import control.enums.ModoDetallesProducto;
 import control.enums.ModoTablaProductos;
@@ -8,11 +8,11 @@ import javax.swing.table.DefaultTableModel;
 
 public class PantallaDetallesProducto extends javax.swing.JFrame {
 
-    ProductoIngredientesDTO producto;
+    ProductoIngredientesViejoDTO producto;
     ModoDetallesProducto modo;
     DefaultTableModel modelo;
 
-    public PantallaDetallesProducto(ProductoIngredientesDTO producto, ModoDetallesProducto modo) {
+    public PantallaDetallesProducto(ProductoIngredientesViejoDTO producto, ModoDetallesProducto modo) {
         initComponents();
 
         this.modelo = (DefaultTableModel) tblIngredientesProducto.getModel();
