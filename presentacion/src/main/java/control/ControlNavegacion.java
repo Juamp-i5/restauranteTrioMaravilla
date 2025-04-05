@@ -35,6 +35,8 @@ import pantallas.PantallaMenuProducto;
 import pantallas.PantallaMenuReporte;
 import pantallas.PantallaMesas;
 import pantallas.PantallaRegistrarNuevoIngrediente;
+import pantallas.PantallaReporteCliente;
+import pantallas.PantallaReporteComanda;
 import pantallas.PantallaTablaClientes;
 import pantallas.PantallaTablaIngredientes;
 import pantallas.PantallaTablaProductos;
@@ -139,6 +141,18 @@ public class ControlNavegacion {
 
     public static void mostrarPantallaMenuReporte() {
         JFrame frame = new PantallaMenuReporte();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+    
+    public static void mostrarPantallaReporteCliente() {
+        JFrame frame = new PantallaReporteCliente();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+    
+    public static void mostrarPantallaReporteComanda() {
+        JFrame frame = new PantallaReporteComanda();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }

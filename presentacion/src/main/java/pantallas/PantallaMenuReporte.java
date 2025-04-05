@@ -6,25 +6,18 @@ package pantallas;
 
 import control.ControlNavegacion;
 import control.enums.ModoMenu;
-import control.enums.ModoTablaProductos;
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
-import javax.swing.JPanel;
 
 /**
  *
  * @author pablo
  */
 public class PantallaMenuReporte extends javax.swing.JFrame {
-
-    private JButton btnRegresar;
-    private final int DIMENSION_BOTON_X = 150;
-    private final int DIMENSION_BOTON_Y = 50;
     private final JButton BTN_REPORTE_CLIENTE = new PlantillaBotonMenuOpciones("Reporte de clientes frecuentes", "#6372B0");
     private final JButton BTN_REPORTE_COMANDA = new PlantillaBotonMenuOpciones("Reporte de comandas", "#6372B0");
 
@@ -48,7 +41,7 @@ public class PantallaMenuReporte extends javax.swing.JFrame {
         BTN_REPORTE_CLIENTE.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+                ControlNavegacion.mostrarPantallaReporteCliente();
                 dispose();
             }
         });
@@ -56,7 +49,7 @@ public class PantallaMenuReporte extends javax.swing.JFrame {
         BTN_REPORTE_COMANDA.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+                ControlNavegacion.mostrarPantallaReporteComanda();
                 dispose();
             }
         });
