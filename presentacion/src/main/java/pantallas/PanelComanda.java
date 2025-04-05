@@ -37,24 +37,31 @@ public class PanelComanda extends javax.swing.JPanel {
         btnCancelar = new javax.swing.JButton();
         lblProductos = new javax.swing.JLabel();
         pnlComandaProductos = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
+        pnlPrecioTotal = new javax.swing.JPanel();
         btnSignoPrecio = new javax.swing.JLabel();
         lblPrecioTotal = new javax.swing.JLabel();
 
+        pnlBotones.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
         lblNombreCliente.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblNombreCliente.setText("Sin registrar");
+        pnlBotones.add(lblNombreCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(87, 122, 258, -1));
 
         lblFolio1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblFolio1.setText("Folio:");
+        pnlBotones.add(lblFolio1, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 28, 59, -1));
 
         lblFolioComanda1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblFolioComanda1.setText("OB-2025-03-28-1");
+        pnlBotones.add(lblFolioComanda1, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 27, 159, -1));
 
         lblFechaComanda1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblFechaComanda1.setText("2025-03-28 2:30:20");
+        pnlBotones.add(lblFechaComanda1, new org.netbeans.lib.awtextra.AbsoluteConstraints(26, 74, 152, -1));
 
         lblCliente1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblCliente1.setText("Cliente:");
+        pnlBotones.add(lblCliente1, new org.netbeans.lib.awtextra.AbsoluteConstraints(26, 122, 55, -1));
 
         btnTerminar.setBackground(new java.awt.Color(123, 191, 112));
         btnTerminar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -64,6 +71,7 @@ public class PanelComanda extends javax.swing.JPanel {
                 btnTerminarActionPerformed(evt);
             }
         });
+        pnlBotones.add(btnTerminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(507, 115, -1, -1));
 
         btnEditar1.setBackground(new java.awt.Color(153, 153, 153));
         btnEditar1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -73,6 +81,7 @@ public class PanelComanda extends javax.swing.JPanel {
                 btnEditar1ActionPerformed(evt);
             }
         });
+        pnlBotones.add(btnEditar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 24, -1, -1));
 
         btnCancelar.setBackground(new java.awt.Color(0, 204, 204));
         btnCancelar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -82,68 +91,11 @@ public class PanelComanda extends javax.swing.JPanel {
                 btnCancelarActionPerformed(evt);
             }
         });
+        pnlBotones.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(507, 24, -1, -1));
 
         lblProductos.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblProductos.setText("Productos:");
-
-        javax.swing.GroupLayout pnlBotonesLayout = new javax.swing.GroupLayout(pnlBotones);
-        pnlBotones.setLayout(pnlBotonesLayout);
-        pnlBotonesLayout.setHorizontalGroup(
-            pnlBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlBotonesLayout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addGroup(pnlBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlBotonesLayout.createSequentialGroup()
-                        .addGroup(pnlBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblFechaComanda1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(pnlBotonesLayout.createSequentialGroup()
-                                .addComponent(lblCliente1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnTerminar)))
-                        .addGap(26, 26, 26))
-                    .addGroup(pnlBotonesLayout.createSequentialGroup()
-                        .addGap(69, 69, 69)
-                        .addComponent(lblFolioComanda1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26)
-                        .addComponent(btnEditar1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnCancelar)
-                        .addGap(29, 29, 29))
-                    .addGroup(pnlBotonesLayout.createSequentialGroup()
-                        .addComponent(lblProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            .addGroup(pnlBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(pnlBotonesLayout.createSequentialGroup()
-                    .addGap(27, 27, 27)
-                    .addComponent(lblFolio1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(543, Short.MAX_VALUE)))
-        );
-        pnlBotonesLayout.setVerticalGroup(
-            pnlBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBotonesLayout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addGroup(pnlBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblFolioComanda1)
-                    .addComponent(btnEditar1)
-                    .addComponent(btnCancelar))
-                .addGap(18, 18, 18)
-                .addComponent(lblFechaComanda1)
-                .addGap(21, 21, 21)
-                .addGroup(pnlBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblNombreCliente)
-                    .addComponent(lblCliente1)
-                    .addComponent(btnTerminar))
-                .addGap(18, 18, 18)
-                .addComponent(lblProductos)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(pnlBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(pnlBotonesLayout.createSequentialGroup()
-                    .addGap(28, 28, 28)
-                    .addComponent(lblFolio1)
-                    .addContainerGap(138, Short.MAX_VALUE)))
-        );
+        pnlBotones.add(lblProductos, new org.netbeans.lib.awtextra.AbsoluteConstraints(26, 165, 91, -1));
 
         javax.swing.GroupLayout pnlComandaProductosLayout = new javax.swing.GroupLayout(pnlComandaProductos);
         pnlComandaProductos.setLayout(pnlComandaProductosLayout);
@@ -162,24 +114,24 @@ public class PanelComanda extends javax.swing.JPanel {
         lblPrecioTotal.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblPrecioTotal.setText("100");
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnlPrecioTotalLayout = new javax.swing.GroupLayout(pnlPrecioTotal);
+        pnlPrecioTotal.setLayout(pnlPrecioTotalLayout);
+        pnlPrecioTotalLayout.setHorizontalGroup(
+            pnlPrecioTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlPrecioTotalLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnSignoPrecio)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblPrecioTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        pnlPrecioTotalLayout.setVerticalGroup(
+            pnlPrecioTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlPrecioTotalLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSignoPrecio)
-                    .addComponent(lblPrecioTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(pnlPrecioTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblPrecioTotal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSignoPrecio))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
@@ -191,7 +143,7 @@ public class PanelComanda extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(636, 636, 636)
                 .addComponent(pnlComandaProductos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnlPrecioTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -200,7 +152,7 @@ public class PanelComanda extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlComandaProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(pnlPrecioTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -222,7 +174,6 @@ public class PanelComanda extends javax.swing.JPanel {
     private javax.swing.JButton btnEditar1;
     private javax.swing.JLabel btnSignoPrecio;
     private javax.swing.JButton btnTerminar;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblCliente1;
     private javax.swing.JLabel lblFechaComanda1;
     private javax.swing.JLabel lblFolio1;
@@ -232,5 +183,6 @@ public class PanelComanda extends javax.swing.JPanel {
     private javax.swing.JLabel lblProductos;
     private javax.swing.JPanel pnlBotones;
     private javax.swing.JPanel pnlComandaProductos;
+    private javax.swing.JPanel pnlPrecioTotal;
     // End of variables declaration//GEN-END:variables
 }

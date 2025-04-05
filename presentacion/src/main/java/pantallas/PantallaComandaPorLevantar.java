@@ -11,12 +11,12 @@ import control.enums.ModoMenu;
  *
  * @author norma
  */
-public class PantallaComandaPorRealizar extends javax.swing.JFrame {
+public class PantallaComandaPorLevantar extends javax.swing.JFrame {
 
     /**
      * Creates new form PantallaComandaPorRealizar
      */
-    public PantallaComandaPorRealizar() {
+    public PantallaComandaPorLevantar() {
         initComponents();
     }
 
